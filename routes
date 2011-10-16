@@ -1,0 +1,3 @@
+/ RootR GET
+/upload UploadR POST
+/static StaticR Static getStatic
