@@ -1,0 +1,77 @@
+body {
+    text-align: center;
+    font-family: Helvetica, sans-serif;
+    font-size: .90em;
+    background-color: #fafafa;
+    color: #666;
+}
+
+a:link    {color:#666;text-decoration:none;}
+a:visited {color:#666;text-decoration:none;}
+a:active  {color:#666;text-decoration:none;}
+a:hover   {color:#666;text-decoration:none;}
+
+#header { 
+    margin: 10px; 
+}
+#header h1 { 
+    font-size: 2em; 
+    text-decoration: none;
+}
+#header h2 {
+    font-size: 1.3em;
+}
+#intro-box {
+    background-color: #e2f2fe;
+    padding: 15px;
+    margin:10px;
+}
+#header h3 { 
+    font-size: 1em; 
+    text-decoration: none;
+    width: 720px; 
+    margin: auto;
+    font-weight:normal;
+}
+
+#main { 
+    width: 720px;
+    text-align: center;
+    margin: auto;
+    padding: 20px;
+}
+
+#gallery { 
+    width: 700px;
+    margin-top: -20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.screenshots ul {
+    list-style: none;
+    float:left;
+    margin-right: -35px;
+}
+.screenshots ul li {
+    padding: 5px;
+}
+
+#footer { 
+    clear:both;
+    text-align: center; 
+    margin: auto; 
+    padding: 10px; 
+    font-size: .9em; 
+    border-top: 1px dashed #ccc;
+}
+
+.arrow {
+    font-size: 1.75em;
+}
+#message {
+    padding: 20px; 
+    border: none;
+}
+#uploadedimageseize {
+    margin:10px;
+}

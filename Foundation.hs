@@ -16,7 +16,7 @@ module Foundation
     , module Models
     , module Yesod.Static
     )where
-
+import Settings.StaticFiles
 import Settings
 import Yesod
 import Models
@@ -39,6 +39,7 @@ instance Yesod ImgHost where
     defaultLayout widget = do
         mmsg <- getMessage
         pc <- widgetToPageContent $ do
+            $(widgetFile "header")
             $(widgetFile "normalize")
             $(widgetFile "default-layout")
             $(widgetFile "footer")
