@@ -1,0 +1,3 @@
+<form method=post action=@{UploadR} enctype=#{enctype}>
+    ^{widget}        
+        <input type=submit>

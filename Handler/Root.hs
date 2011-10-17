@@ -2,16 +2,11 @@
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE QuasiQuotes #-}
 module Handler.Root (getRootR) where
-import Yesod 
---import Helpers.Documents
-import Data.Text (Text)
-import Foundation (uploadForm)
-{-import Forms.Upload (uploadForm)-}
+import Foundation
+import Forms.Upload
 getRootR :: Handler RepHtml
-
 getRootR = do
-    ((res,widget),enctype) <- generateFormPost uploadForm
+    ((_,widget),enctype) <- runFormPost uploadForm
     defaultLayout $ do 
         setTitle "Home"
-        --addKeywords ["Images","Home"]
         $(widgetFile "homepage")
