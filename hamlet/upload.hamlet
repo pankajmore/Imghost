@@ -1,1 +1,2 @@
-<a href=#{image}>Image
+<a href=#{image}>Image Link
+<img src=#{image} alt="Angry face"/>
