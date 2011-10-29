@@ -1,1 +1,4 @@
 <a href=#{image}>Image
+<br>
+<p> url:
+<input type=textbox value=http://localhost:5432#{image} readonly>
