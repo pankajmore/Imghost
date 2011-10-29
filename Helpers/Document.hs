@@ -2,6 +2,8 @@
 {-# LANGUAGE TypeFamilies, QuasiQuotes, MultiParamTypeClasses,TemplateHaskell, OverloadedStrings #-}
 module Helpers.Document
     ( getRandomName
+    , getName
+    , getExtension
     )where
 import Foundation
 import System.Random
@@ -27,4 +29,9 @@ checkDatabase image = do
                Just _ -> return True
                _ -> return False
 
+getName :: String ->  String
+getName = takeWhile (/='.')
+
+getExtension :: String ->  String
+getExtension = dropWhile (/='.')
 

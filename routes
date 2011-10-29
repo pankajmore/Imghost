@@ -1,5 +1,6 @@
 / RootR GET
 /upload UploadR POST
+/image/#String GET
 /recent RecentR GET
 /search SearchR GET
 /static StaticR Static getStatic

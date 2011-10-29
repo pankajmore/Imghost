@@ -13,7 +13,7 @@ postUploadR = do
     case res of 
         FormSuccess r -> do let fileInfo = img r
                             let name = T.unpack $ fileName fileInfo
-                            let extension = dropWhile (/='.') name
+                            let extension = getExtension name
                             let tag = T.unpack $ tags r
                             randName <- getRandomName extension
                             if T.isPrefixOf "image" (fileContentType fileInfo) 
