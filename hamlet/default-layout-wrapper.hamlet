@@ -2,7 +2,6 @@
 <html>
     <head
         <title>#{pageTitle pc}
-        <link href=@{StaticR css_default_css} rel="stylesheet" type="text/css" media="screen"/>
         ^{pageHead pc}
     <body
         ^{pageBody pc}

@@ -1,3 +1,13 @@
 body {
-    font-family: sans-serif;
+    text-align: center;
+    font-family: Helvetica, sans-serif;
+    font-size: .90em;
+    background-color: #fafafa;
+    color: #666;
 }
+a:link    {color:#666;text-decoration:none;}
+a:visited {color:#666;text-decoration:none;}
+a:active  {color:#666;text-decoration:none;}
+a:hover   {color:#666;text-decoration:none;}
+
+
