@@ -1,4 +1,4 @@
-<form method=get action=@{SearchR 1} enctype=#{enctypeSearch}>
+<form method=get action=@{SearchR} enctype=#{enctypeSearch}>
     ^{widgetSearch}        
         <input type=submit>
 <form method=post action=@{UploadR} enctype=#{enctypeUpload}>

@@ -9,6 +9,7 @@ import Handler.Root
 import Handler.Upload
 import Handler.Recent
 import Handler.Search
+import Handler.Display
 
 mkYesodDispatch "ImgHost" resourcesImgHost
 main :: IO ()

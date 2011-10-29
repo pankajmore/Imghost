@@ -1,0 +1,15 @@
+<p> queried for #{tagquery}
+<center>
+    $if (>) n 1 
+        <a href=@{DisplayR tagquery ((-) n 1)}><< #
+    <a href=@{DisplayR tagquery n}>#{n} #
+    $if (<) n $ length pages
+        <a href=@{DisplayR tagquery ((+) n 1)}>>> #
+    <br>
+    $forall pageNum <- pages
+        <a href=@{DisplayR tagquery pageNum}>#{pageNum} #
+    <ul>
+
+    $forall i <- imgList
+        <a href=#{(++) sUploadDirectory i}><img src=#{(++) sUploadDirectory i} alt="Angry face" width="250" height="250"/>
+        <br>
