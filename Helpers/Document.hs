@@ -4,9 +4,11 @@ module Helpers.Document
     ( getRandomName
     , getName
     , getExtension
+    , getImage
     )where
 import Foundation
 import System.Random
+import Control.Applicative 
 {-
  - Generates a random name of length 20 containing chars from a-z, checks if
  - the database already contains that name, if calls itself again to do another
@@ -35,3 +37,5 @@ getName = takeWhile (/='.')
 getExtension :: String ->  String
 getExtension = dropWhile (/='.')
 
+getImage id = fmap imagesImageName <$> runDB (get id)
+                

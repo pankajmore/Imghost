@@ -20,12 +20,11 @@ postUploadR = do
                                 then do 
                                         time <- liftIO getCurrentTime
                                         liftIO $ L.writeFile (uploadDirectory ++ randName) $ fileContent fileInfo
-                                        runDB (insert $ Images randName tag time)
+                                        id <- runDB (insert $ Images randName tag time)
+                                        redirect RedirectTemporary (ImageR id)
                                 else do 
                                         setMessage "Not an image File"
                                         redirect RedirectTemporary RootR
-                            let image = sUploadDirectory++randName
-                            defaultLayout $(widgetFile "upload")
         _ -> do setMessage "Form Error . Fill Again"
                 redirect RedirectTemporary RootR 
 

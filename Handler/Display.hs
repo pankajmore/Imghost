@@ -10,7 +10,7 @@ getDisplayR :: [Char] -> Int -> Handler RepHtml
 getDisplayR tagquery pageNumber = do
                         let resultsPerPage = 2
                         let n = pageNumber
-                        imgList <- map (imagesImageName . snd) <$> runDB (selectList [ ImagesImageTag ==. tagquery
+                        imgList <- map getPair <$> runDB (selectList [ ImagesImageTag ==. tagquery
                                 ]
                                 [ Desc ImagesCreated
                                 , LimitTo resultsPerPage
@@ -20,4 +20,6 @@ getDisplayR tagquery pageNumber = do
                         let numberofitems = length items
                         let pages = [1..numberofitems `div` resultsPerPage]
                         defaultLayout $(widgetFile "display")
+        where getPair i = (fst i , imagesImageName $ snd i) 
+
 
