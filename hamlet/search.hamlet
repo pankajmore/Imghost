@@ -1,1 +1,5 @@
 <p> queried for #{tags}
+$forall i <- imgList
+
+    <a href=#{(++) sUploadDirectory i}><img src=#{(++) sUploadDirectory i} alt="Angry face" width="250" height="250"/>
+    <br>

@@ -7,7 +7,7 @@ import Forms.Upload
 import Forms.Search
 getRootR :: Handler RepHtml
 getRootR = do
-    ((_,widgetSearch),enctypeSearch) <- generateFormPost searchForm
+    ((_,widgetSearch),enctypeSearch) <- generateFormGet searchForm
     ((_,widgetUpload),enctypeUpload) <- runFormPost uploadForm
     defaultLayout $ do 
         setTitle "Home"
