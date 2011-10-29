@@ -2,3 +2,4 @@
 /upload UploadR POST
 /recent RecentR GET
 /static StaticR Static getStatic
+/search SearchR POST

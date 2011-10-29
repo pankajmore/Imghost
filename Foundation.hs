@@ -3,7 +3,6 @@
 module Foundation 
     ( ImgHost(..)
     , ImgHostRoute (..)
-    , Images
     , resourcesImgHost
     , openConnectionCount
     , uploadDirectory

@@ -8,6 +8,7 @@ import Database.Persist.Sqlite
 import Handler.Root
 import Handler.Upload
 import Handler.Recent
+import Handler.Search
 
 mkYesodDispatch "ImgHost" resourcesImgHost
 main :: IO ()

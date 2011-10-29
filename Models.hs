@@ -18,3 +18,5 @@ data Img = Img
     , tags :: Text
     }deriving Show
 
+data Search = Search
+    { tag :: Text }deriving Show

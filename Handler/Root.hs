@@ -4,9 +4,11 @@
 module Handler.Root (getRootR) where
 import Foundation
 import Forms.Upload
+import Forms.Search
 getRootR :: Handler RepHtml
 getRootR = do
-    ((_,widget),enctype) <- runFormPost uploadForm
+    ((_,widgetSearch),enctypeSearch) <- generateFormPost searchForm
+    ((_,widgetUpload),enctypeUpload) <- runFormPost uploadForm
     defaultLayout $ do 
         setTitle "Home"
         $(widgetFile "homepage")
