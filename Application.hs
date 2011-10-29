@@ -13,7 +13,7 @@ import Handler.Display
 import Handler.Image
 
 mkYesodDispatch "ImgHost" resourcesImgHost
-main :: IO ()
-main = withSqlitePool "test.db3" openConnectionCount $ \pool -> do
+mainp :: IO ()
+mainp = withSqlitePool "test.db3" openConnectionCount $ \pool -> do
     runSqlPool (runMigration migrateAll) pool
     warpDebug 5432 $ ImgHost (Static defaultWebAppSettings) pool

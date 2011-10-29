@@ -1,0 +1,94 @@
+name:              imghost
+version:           0.0.0
+license:           BSD3
+license-file:      LICENSE
+author:            
+maintainer:        
+synopsis:          Source for imghost
+description:       Source for imghost
+category:          Web
+stability:         Experimental
+cabal-version:     >= 1.6
+build-type:        Simple
+homepage:          http://imghost.pankajmore.in
+
+Flag devel
+    description:   Build for yesod devel
+    default:       False
+
+Flag production
+    Description:   Build the production executable.
+    Default:       False
+
+
+library
+    if flag(devel)
+        buildable: True
+        cpp-options: -DDEVELOPMENT
+    else
+        buildable: False
+
+    hs-source-dirs:  .
+    exposed-modules: Application
+    other-modules:   Foundation
+                     Model
+                     Settings
+                     Helpers.Forms
+                     Helpers.Documents
+                     Handler.Display
+                     Handler.Recent
+                     Handler.Root
+                     Handler.Search
+                     Handler.Upload
+
+
+executable imghost
+    if flag(devel)
+        buildable: False
+    
+    if flag(production)
+        cpp-options:   -DPRODUCTION
+        ghc-options:   -Wall -threaded -O2
+    else
+        --buildable: True
+        ghc-options: -Wall -threaded -O2
+
+    main-is:        main.hs
+    hs-source-dirs: .
+
+    build-depends: base  >= 4   && < 5
+                 , yesod >= 0.9 && < 1.0
+                 , yesod-core
+ --                , yesod-auth >= 0.7.4.1
+                 , yesod-form
+                 , yesod-persistent
+                 , yesod-static
+                 , yesod-default
+                 , wai-app-static
+ --                , yesod-comments
+ --                , wai-extra
+ --                , containers
+                 , bytestring
+                 , text
+                 , time
+                 , random
+ --                , persistent
+ --                , persistent-template
+                 , persistent-sqlite 
+                 , hamlet                >= 0.10 && < 0.11
+ --                , shakespeare-css       >= 0.10 && < 0.11
+ --                , shakespeare-js        >= 0.10 && < 0.11
+ --                , shakespeare-text      >= 0.10 && < 0.11
+ --                , template-haskell
+ --                , transformers
+ --                , warp
+ --                , blaze-builder
+ --                , blaze-html
+ --                , transformers
+ --                , clientsession
+ --                , unix
+  
+source-repository head
+  type:     git
+  location: git://bitbucket.org/satvikc/imghost.git
+
