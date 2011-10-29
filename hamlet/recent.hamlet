@@ -1,3 +1,4 @@
 $forall i <- imgList
-    <img src=#{(++) sUploadDirectory i} alt="Angry face" width="125" height="125"/>
+
+    <a href=#{(++) sUploadDirectory i}><img src=#{(++) sUploadDirectory i} alt="Angry face" width="250" height="250"/>
     <br>
