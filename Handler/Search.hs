@@ -11,8 +11,7 @@ postSearchR :: Handler RepHtml
 postSearchR = do
     ((result, widget), enctype) <- runFormPost searchForm
     case result of
-        FormSuccess t -> do 
-                        let tags = tag t 
+        FormSuccess tags -> do 
                         defaultLayout $(widgetFile "search")
         _ -> defaultLayout [whamlet|
 <p>Invalid input, let's try again.
