@@ -1,0 +1,3 @@
+$forall i <- imgList
+    <img src=#{(++) sUploadDirectory i} alt="Angry face" width="125" height="125"/>
+    <br>

@@ -61,5 +61,5 @@ uploadDirectory = "./static/upload/"
 sUploadDirectory :: String
 sUploadDirectory = tail uploadDirectory
 defaultTags :: [(Text,Text)]
-defaultTags = [("Nature","Nature"),("Celebrity","Celebrity"),("Machines","Machines"),("Other","Other")]
+defaultTags = [("Nature","Nature"),("Celebrity","Celebrity"),("Machines","Machines"),("NSFW","NSFW"),("Other","Other")]
 

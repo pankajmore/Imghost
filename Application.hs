@@ -7,6 +7,7 @@ import Network.Wai.Application.Static (defaultWebAppSettings)
 import Database.Persist.Sqlite
 import Handler.Root
 import Handler.Upload
+import Handler.Recent
 
 mkYesodDispatch "ImgHost" resourcesImgHost
 main :: IO ()
