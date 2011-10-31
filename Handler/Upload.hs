@@ -7,6 +7,8 @@ import Data.Time
 import qualified Data.ByteString.Lazy as L
 import Helpers.Document
 import qualified Data.Text as T
+import System.Cmd (system)
+
 postUploadR :: Handler RepHtml
 postUploadR = do
     ((res,widget),enctype) <- runFormPost uploadForm
@@ -16,11 +18,13 @@ postUploadR = do
                             let extension = getExtension name
                             let tag = T.unpack $ tags r
                             randName <- getRandomName extension
+                            let fullName = randName ++ extension
                             if T.isPrefixOf "image" (fileContentType fileInfo) 
                                 then do 
                                         time <- liftIO getCurrentTime
-                                        liftIO $ L.writeFile (uploadDirectory ++ randName) $ fileContent fileInfo
-                                        id <- runDB (insert $ Images randName tag time)
+                                        liftIO $ L.writeFile (uploadDirectory ++ randName ++ extension) $ fileContent fileInfo
+                                        liftIO $ system $ "convert " ++ uploadDirectory ++ randName ++ extension ++ " -thumbnail 250x90 " ++ uploadDirectory ++ randName ++ "-thumb" ++ extension
+                                        id <- runDB (insert $ Images fullName tag time)
                                         redirect RedirectTemporary (ImageR id)
                                 else do 
                                         setMessage "Not an image File"

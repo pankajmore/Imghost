@@ -22,7 +22,7 @@ getRandomName ending = do
                     let isInDatabase = False
                     isInDatabase <- checkDatabase (a ++ ending)
                     if (not isInDatabase)
-                        then return (a ++ ending)
+                        then return (a) --only need the filename not the extension name
                         else getRandomName ending
 checkDatabase :: String -> GHandler ImgHost ImgHost Bool
 checkDatabase image = do 
