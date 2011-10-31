@@ -67,6 +67,7 @@ executable imghost
                  , yesod-default
                  , wai-app-static
                  , yesod-comments
+                 , yesod-goodies
  --                , wai-extra
  --                , containers
                  , bytestring
