@@ -15,9 +15,9 @@ Images
     ImageName imageName
 
 User
-    ident Text
-    password Text Maybe
-    UniqueUser ident
+    name  Text Maybe Update
+    email Text Maybe Update
+    admin Bool default=false Eq Update
 
 Ident
     ident Text   Asc

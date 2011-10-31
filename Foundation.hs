@@ -43,18 +43,31 @@ data ImgHost = ImgHost
 mkYesodData "ImgHost" $(parseRoutesFile "routes")
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 instance Yesod ImgHost where
-    approot _ = "http://localhost:5432"
+    approot _ = "http://localhost:5432" --change this to website domain-name other openid wont work
     authRoute _ = Just $ AuthR LoginR
     encryptKey _ = fmap Just $ getKey "client_session_key.aes"
 
     defaultLayout widget = do
         mmsg <- getMessage
+        muid <- maybeAuth
+        let mgrav = fmap getGravatar muid
         pc <- widgetToPageContent $ do
             $(widgetFile "header")
             $(widgetFile "normalize")
             $(widgetFile "default-layout")
             $(widgetFile "footer")
         hamletToRepHtml $(hamletFile "hamlet/default-layout-wrapper.hamlet")
+
+        where
+            getGravatar :: (UserId, User) -> String
+            getGravatar (_,u) = let email = fromMaybe "" $ userEmail u
+                                in  gravatarImg email gravatarOpts
+
+            gravatarOpts :: GravatarOptions
+            gravatarOpts = defaultOptions
+                { gSize    = Just $ Size 12
+                , gDefault = Just MM
+                }
 
 
 instance RenderMessage ImgHost FormMessage where
@@ -69,22 +82,25 @@ instance YesodPersist ImgHost where
 instance YesodAuth ImgHost where
     type AuthId ImgHost = UserId
 
-    loginDest _ = RootR
+    loginDest _ = ProfileR
     logoutDest _ = RootR
-    
-    getAuthId creds = runDB $ do
-        x <- getBy $ UniqueUser $ credsIdent creds
-        case x of
-            Just (uid, _) -> return $ Just uid
-            Nothing -> do
-                fmap Just $ insert $ User (credsIdent creds) Nothing
 
+    getAuthId creds = runDB $ do
+        x <- getBy $ UniqueIdent $ credsIdent creds
+        case x of
+            Just (_, i) -> do
+                return $ Just $ identUser i
+
+            Nothing -> do
+                uid <- insert $ User Nothing Nothing False
+                _   <- insert $ Ident (credsIdent creds) uid
+                return $ Just uid
 
     authPlugins = [ authOpenId ]
 
-    {-loginHandler = defaultLayout $ do-}
-        {-setTitle "Login"-}
-        {-addWidget $(widgetFile "login")-}
+    loginHandler = defaultLayout $ do
+        setTitle "Login"
+        addWidget $(widgetFile "login")
 
 
 instance YesodComments ImgHost where

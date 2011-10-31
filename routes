@@ -4,6 +4,8 @@
 /image/#ImagesId ImageR GET POST
 /recent RecentR GET
 /search SearchR GET
+/profile               ProfileR     GET
+/profile/edit          EditProfileR GET POST
 /votei/#ImagesId VoteiR POST
 /voted/#ImagesId VotedR POST
 /static StaticR Static getStatic
