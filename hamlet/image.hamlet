@@ -1,11 +1,11 @@
-<a href=#{image}>Image Link
 <br>
 <p> original image:
 <input .#{urlbox} type=textbox value=#{image} readonly>
 <p> Thumbnail:
 <input .#{urlbox} type=textbox value=#{image2} readonly>
 <p>
-<img src=#{image} alt="Angry face" height="300">
+<a href=#{image}>
+    <img src=#{image} alt="Angry face" height="300">
 <p> Votes : #{votes} 
 <form method=post action=@{VotedR id} enctype=#{denctype}> 
     ^{dwidget}
