@@ -1,5 +1,7 @@
 <a href=#{image}>Image Link
 <br>
-<p> url:
-<input type=textbox value=http://localhost:5432#{image} readonly>
+<p> original image:
+<input type=textbox value=#{image} readonly>
+<p> Thumbnail:
+<input type=textbox value=#{image2} readonly>
 <img src=#{image} alt="Angry face"/>
