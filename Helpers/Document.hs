@@ -42,4 +42,4 @@ getThumb iName = getName iName ++ "-thumb" ++ getExtension iName
 getExtension :: String ->  String
 getExtension = dropWhile (/='.')
 
-getImage id = fmap imagesImageName <$> runDB (get id)
+getImage id = fmap (\x -> (imagesImageName x,imagesImageTag x,imagesVotes x,imagesCreated x)) <$> runDB (get id)

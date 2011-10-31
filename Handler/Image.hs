@@ -11,9 +11,10 @@ import Data.Maybe (fromJust)
 import Yesod.Comments
 getImageR :: ImagesId -> Handler RepHtml
 getImageR id = do
-                imageName <- getImage id
-                case imageName of
-                    Just iName ->do let image = sUploadDirectory ++ (iName)
+                im <- getImage id
+                case im of
+                    Just (iName,tag,votes,createdTime) ->do 
+                                    let image = sUploadDirectory ++ (iName)
                                     let image2 = getThumb image
                                     defaultLayout $ do
                                         $(widgetFile "image")

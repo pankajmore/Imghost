@@ -10,6 +10,7 @@ share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persist|
 Images
     imageName String
     imageTag String
+    votes Int
     created UTCTime
     ImageName imageName
 |]

@@ -6,3 +6,6 @@
 <input type=textbox value=#{image2} readonly>
 <p>
 <img src=#{image} alt="Angry face" height="300">
+<p> Votes : #{votes} 
+<p> Tag : #{tag}
+<p> Created on : #{show createdTime} 
