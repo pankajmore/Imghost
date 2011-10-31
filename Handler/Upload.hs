@@ -23,7 +23,7 @@ postUploadR = do
                                 then do 
                                         time <- liftIO getCurrentTime
                                         liftIO $ L.writeFile (uploadDirectory ++ randName ++ extension) $ fileContent fileInfo
-                                        liftIO $ system $ "convert " ++ uploadDirectory ++ randName ++ extension ++ " -thumbnail 250x90 " ++ uploadDirectory ++ randName ++ "-thumb" ++ extension
+                                        liftIO $ system $ "convert " ++ uploadDirectory ++ randName ++ extension ++ " -thumbnail 100x100^ -gravity center -extent 100x100 " ++ uploadDirectory ++ randName ++ "-thumb" ++ extension
                                         id <- runDB (insert $ Images fullName tag time)
                                         redirect RedirectTemporary (ImageR id)
                                 else do 

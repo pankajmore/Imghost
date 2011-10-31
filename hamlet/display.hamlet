@@ -11,5 +11,5 @@
     <ul>
 
     $forall i <- imgList
-        <a href=@{ImageR $ fst i}><img src=#{getThumb $ (++) sUploadDirectory $ snd i} alt="Angry face" width="250" height="250"/>
+        <a href=@{ImageR $ fst i}><img src=#{getThumb $ (++) sUploadDirectory $ snd i} alt="Angry face"/>
         <br>
