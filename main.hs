@@ -1,6 +1,7 @@
 import Yesod.Default.Config (fromArgs)
 import Yesod.Default.Main   (defaultMain)
-import Application          (mainp)
+import Application          (withImgHost)
 
 main :: IO ()
-main = mainp
+main = defaultMain fromArgs withImgHost
+

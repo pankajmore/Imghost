@@ -25,10 +25,15 @@ import qualified Data.ByteString.Lazy as L
 import Yesod.Static
 import Database.Persist.Sqlite
 import Text.Hamlet (hamletFile)
+import Yesod.Default.Config
+import Yesod.Default.Util (addStaticContentExternal)
+import Yesod.Logger (Logger, logLazyText)
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 data ImgHost = ImgHost 
-        { getStatic :: Static
+        { settings :: AppConfig DefaultEnv
+        , getLogger :: Logger
+        , getStatic :: Static -- ^ Settings for static file serving.
         , connPool  :: ConnectionPool
         }
 mkYesodData "ImgHost" $(parseRoutesFile "routes")
@@ -50,7 +55,7 @@ instance RenderMessage ImgHost FormMessage where
 instance YesodPersist ImgHost where
     type YesodPersistBackend ImgHost = SqlPersist
     runDB action = liftIOHandler $ do
-            ImgHost _ pool <- getYesod
+            ImgHost _  _ _ pool <- getYesod
             runSqlPool action pool
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 openConnectionCount :: Int
