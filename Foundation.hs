@@ -43,7 +43,7 @@ data ImgHost = ImgHost
 mkYesodData "ImgHost" $(parseRoutesFile "routes")
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 instance Yesod ImgHost where
-    approot _ = ""
+    approot _ = "http://localhost:5432"
     authRoute _ = Just $ AuthR LoginR
     encryptKey _ = fmap Just $ getKey "client_session_key.aes"
 
