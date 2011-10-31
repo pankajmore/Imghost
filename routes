@@ -3,5 +3,7 @@
 /image/#ImagesId ImageR GET POST
 /recent RecentR GET
 /search SearchR GET
+/votei/#ImagesId VoteiR POST
+/voted/#ImagesId VotedR POST
 /static StaticR Static getStatic
 /search/#String/#Int DisplayR GET

@@ -1,11 +1,17 @@
 <a href=#{image}>Image Link
 <br>
 <p> original image:
-<input type=textbox value=#{image} readonly>
+<input .#{urlbox} type=textbox value=#{image} readonly>
 <p> Thumbnail:
-<input type=textbox value=#{image2} readonly>
+<input .#{urlbox} type=textbox value=#{image2} readonly>
 <p>
 <img src=#{image} alt="Angry face" height="300">
 <p> Votes : #{votes} 
+<form method=post action=@{VotedR id} enctype=#{denctype}> 
+    ^{dwidget}
+        <input type=image src="/static/images/thumbsdown.jpg" value="Submit" alt="Submit" width="20" height="20">
+<form method=post action=@{VoteiR id} enctype=#{ienctype}> 
+    ^{iwidget}
+        <input type=image src="/static/images/thumbsup.jpg" value="Submit" alt="Submit" width="20" height="20">
 <p> Tag : #{tag}
 <p> Created on : #{show createdTime} 

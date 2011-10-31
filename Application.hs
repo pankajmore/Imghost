@@ -11,6 +11,7 @@ import Handler.Recent
 import Handler.Search
 import Handler.Display
 import Handler.Image
+import Handler.Vote
 import Yesod.Comments.Management
 import Yesod.Comments.Storage
 import Data.Dynamic (Dynamic, toDyn)
