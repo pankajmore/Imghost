@@ -10,7 +10,7 @@ import qualified Data.Text as T
 import Data.Maybe (fromJust)
 import Yesod.Comments
 import Forms.Vote
-import Yesod.Goodies.Time
+import Yesod.Goodies
 getImageR :: ImagesId -> Handler RepHtml
 getImageR id = do
                 ((iresult, iwidget), ienctype) <- generateFormPost voteIForm

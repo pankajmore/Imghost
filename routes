@@ -1,4 +1,5 @@
 / RootR GET
+/auth AuthR Auth getAuth
 /upload UploadR POST
 /image/#ImagesId ImageR GET POST
 /recent RecentR GET

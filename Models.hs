@@ -13,6 +13,16 @@ Images
     votes Int
     created UTCTime
     ImageName imageName
+
+User
+    ident Text
+    password Text Maybe
+    UniqueUser ident
+
+Ident
+    ident Text   Asc
+    user  UserId Eq
+    UniqueIdent ident
 |]
 data Img = Img
     { img :: FileInfo 
