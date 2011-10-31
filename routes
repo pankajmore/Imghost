@@ -1,6 +1,6 @@
 / RootR GET
 /upload UploadR POST
-/image/#ImagesId ImageR GET
+/image/#ImagesId ImageR GET POST
 /recent RecentR GET
 /search SearchR GET
 /static StaticR Static getStatic

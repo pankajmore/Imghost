@@ -11,9 +11,12 @@ import Handler.Recent
 import Handler.Search
 import Handler.Display
 import Handler.Image
+import Yesod.Comments.Management
+import Yesod.Comments.Storage
 
 mkYesodDispatch "ImgHost" resourcesImgHost
 mainp :: IO ()
 mainp = withSqlitePool "test.db3" openConnectionCount $ \pool -> do
     runSqlPool (runMigration migrateAll) pool
+    runSqlPool (runMigration migrateComments) pool
     warpDebug 5432 $ ImgHost (Static defaultWebAppSettings) pool

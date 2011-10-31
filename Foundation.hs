@@ -25,6 +25,11 @@ import qualified Data.ByteString.Lazy as L
 import Yesod.Static
 import Database.Persist.Sqlite
 import Text.Hamlet (hamletFile)
+import Yesod.Comments
+import Yesod.Comments.Management
+import Yesod.Comments.Storage
+
+
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 data ImgHost = ImgHost 
@@ -52,6 +57,12 @@ instance YesodPersist ImgHost where
     runDB action = liftIOHandler $ do
             ImgHost _ pool <- getYesod
             runSqlPool action pool
+
+instance YesodComments ImgHost where
+    getComment     = getCommentPersist
+    storeComment   = storeCommentPersist
+    deleteComment  = deleteCommentPersist
+    loadComments   = loadCommentsPersist
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 openConnectionCount :: Int
 openConnectionCount = 10
