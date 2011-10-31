@@ -31,10 +31,11 @@ library
     hs-source-dirs:  .
     exposed-modules: Application
     other-modules:   Foundation
-                     Model
+                     Models
                      Settings
-                     Helpers.Forms
-                     Helpers.Documents
+                     Forms.Search
+                     Forms.Upload
+                     Helpers.Document
                      Handler.Display
                      Handler.Recent
                      Handler.Root
@@ -91,4 +92,3 @@ executable imghost
 source-repository head
   type:     git
   location: git://bitbucket.org/satvikc/imghost.git
-
