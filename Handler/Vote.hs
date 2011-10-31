@@ -9,7 +9,7 @@ import Control.Applicative
 import qualified Data.Text as T
 postVotedR :: ImagesId ->Handler RepHtml
 postVotedR id = do
-    ((dresult, iwidget), denctype) <- runFormPost voteDForm
+    ((dresult, dwidget), denctype) <- runFormPost voteDForm
     case dresult of
         FormSuccess _ -> do 
                         runDB (update id [ImagesVotes -=. 1])
@@ -18,7 +18,7 @@ postVotedR id = do
 
 postVoteiR :: ImagesId ->Handler RepHtml
 postVoteiR id = do
-    ((iresult, dwidget), ienctype) <- runFormPost voteIForm
+    ((iresult, iwidget), ienctype) <- runFormPost voteIForm
     case iresult of
         FormSuccess _ -> do 
                         runDB (update id [ImagesVotes +=. 1])

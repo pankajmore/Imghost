@@ -1,3 +1,6 @@
 .#{urlbox} {
         width:50%
         }
+.#{tableProperty}{
+        align:center
+        }

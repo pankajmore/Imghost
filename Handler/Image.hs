@@ -13,8 +13,8 @@ import Forms.Vote
 import Yesod.Goodies.Time
 getImageR :: ImagesId -> Handler RepHtml
 getImageR id = do
-                ((iresult, dwidget), ienctype) <- generateFormPost voteIForm
-                ((dresult, iwidget), denctype) <- generateFormPost voteDForm
+                ((iresult, iwidget), ienctype) <- generateFormPost voteIForm
+                ((dresult, dwidget), denctype) <- generateFormPost voteDForm
                 im <- getImage id
                 case im of
                     Just (iName,tag,votes,cTime) ->do 
@@ -23,6 +23,7 @@ getImageR id = do
                                     createdTime <- humanReadableTime cTime
                                     defaultLayout $ do
                                         urlbox <- lift newIdent
+                                        tableProperty <- lift newIdent
                                         $(widgetFile "image")
                                         addComments $ T.pack iName
                     Nothing -> do setMessage "ID not found in the database"

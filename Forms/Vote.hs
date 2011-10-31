@@ -7,6 +7,13 @@ import Foundation
 import Yesod 
 import Control.Applicative
 voteIForm :: Html -> Form ImgHost ImgHost (FormResult (), Widget)
-voteIForm = renderTable $ id <$> pure ()
+voteIForm extra = return ( FormSuccess () , [whamlet|
+#{extra}
+        <input type=image src="/static/images/thumbsup.jpg" value="Submit" alt="Submit" width="20" height="20">
+|])
 voteDForm :: Html -> Form ImgHost ImgHost (FormResult (), Widget)
-voteDForm = renderTable $ id <$> pure ()
+voteDForm extra = return ( FormSuccess () , [whamlet|
+#{extra}
+        <input type=image src="/static/images/thumbsdown.jpg" value="Submit" alt="Submit" width="20" height="20">
+|])
+

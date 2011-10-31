@@ -6,12 +6,19 @@
 <p>
 <a href=#{image}>
     <img src=#{image} alt="Angry face" height="300">
-<p> Votes : #{votes} 
-<form method=post action=@{VotedR id} enctype=#{denctype}> 
-    ^{dwidget}
-        <input type=image src="/static/images/thumbsdown.jpg" value="Submit" alt="Submit" width="20" height="20">
-<form method=post action=@{VoteiR id} enctype=#{ienctype}> 
-    ^{iwidget}
-        <input type=image src="/static/images/thumbsup.jpg" value="Submit" alt="Submit" width="20" height="20">
-<p> Tag : #{tag}
-<p> Created : #{createdTime} 
+<table .#{tableProperty}>
+    <tr>
+        <td> 
+            <p> Votes : #{votes} #
+        <td> 
+            <form method=post action=@{VotedR id} enctype=#{denctype}> 
+                ^{dwidget}
+        <td> 
+            <form method=post action=@{VoteiR id} enctype=#{ienctype}> 
+                ^{iwidget}
+    <tr>
+        <td>
+            <p> Tag : #{tag}
+    <tr>
+        <td>
+            <p> Created : #{createdTime} 
