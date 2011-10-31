@@ -14,4 +14,4 @@
     ^{iwidget}
         <input type=image src="/static/images/thumbsup.jpg" value="Submit" alt="Submit" width="20" height="20">
 <p> Tag : #{tag}
-<p> Created on : #{show createdTime} 
+<p> Created : #{createdTime} 
