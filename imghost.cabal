@@ -73,6 +73,7 @@ executable imghost
                  , text
                  , time
                  , random
+                 , process
  --                , persistent
  --                , persistent-template
                  , persistent-sqlite 
