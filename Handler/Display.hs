@@ -6,6 +6,7 @@ import Data.Time
 import qualified Data.ByteString.Lazy as L
 import Control.Applicative
 import qualified Data.Text as T
+import Helpers.Document
 getDisplayR :: [Char] -> Int -> Handler RepHtml
 getDisplayR tagquery pageNumber = do
                         let resultsPerPage = 2

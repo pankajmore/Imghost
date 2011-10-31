@@ -13,7 +13,7 @@ getImageR id = do
                 imageName <- getImage id
                 case imageName of
                     Just iName ->do let image = sUploadDirectory ++ (iName)
-                                    let image2 = sUploadDirectory ++ (getName iName) ++ "-thumb" ++ (getExtension iName)
+                                    let image2 = getThumb image
                                     defaultLayout $(widgetFile "image")
                     Nothing -> do setMessage "ID not found in the database"
                                   redirect RedirectTemporary RootR

@@ -5,4 +5,4 @@
 <p> Thumbnail:
 <input type=textbox value=#{image2} readonly>
 <p>
-<img src=#{image} alt="Angry face"/>
+<img src=#{getThumb image} alt="Angry face"/>

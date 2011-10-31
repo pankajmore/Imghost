@@ -5,6 +5,7 @@ module Helpers.Document
     , getName
     , getExtension
     , getImage
+    , getThumb
     )where
 import Foundation
 import System.Random
@@ -34,8 +35,11 @@ checkDatabase image = do
 getName :: String ->  String
 getName = takeWhile (/='.')
 
+getThumb :: String -> String
+getThumb iName = getName iName ++ "-thumb" ++ getExtension iName
+
+
 getExtension :: String ->  String
 getExtension = dropWhile (/='.')
 
 getImage id = fmap imagesImageName <$> runDB (get id)
-                

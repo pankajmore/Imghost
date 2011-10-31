@@ -6,11 +6,11 @@ import Foundation
 import Forms.Upload
 import Models
 import Control.Applicative
-
+import Helpers.Document
 getRecentR :: Handler RepHtml
 getRecentR = do
                 imgList <- map getPair <$> runDB (selectList [] [Desc ImagesCreated, LimitTo 10])
                 defaultLayout $ do 
                                 setTitle "Recent Images"
                                 $(widgetFile "recent")
-        where getPair i = (fst i , imagesImageName $ snd i) 
+        where getPair i = (fst i , getThumb (imagesImageName $ snd i)) 
