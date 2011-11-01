@@ -16,6 +16,7 @@ getImageR id = do
                 ((iresult, iwidget), ienctype) <- generateFormPost (imageForm "/static/images/thumbsup.jpg")
                 ((delresult, delwidget), delenctype) <- generateFormPost (imageForm "/static/images/delete.png")
                 ((dresult, dwidget), denctype) <- generateFormPost (imageForm "/static/images/thumbsdown.jpg")
+                ((downresult, downwidget), downenctype) <- generateFormPost (imageForm "/static/images/download.jpg")
                 im <- getImage id
                 case im of
                     Just (iName,tag,caption,votes,cTime) ->do 

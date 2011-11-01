@@ -12,6 +12,7 @@ import Handler.Search
 import Handler.Display
 import Handler.Image
 import Handler.Vote
+import Handler.Download
 import Handler.Delete
 import Yesod.Comments.Management
 import Yesod.Comments.Storage
