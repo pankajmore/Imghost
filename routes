@@ -9,3 +9,4 @@
 /static StaticR Static getStatic
 /search/#String/#Int DisplayR GET
 /image/download/#ImagesId DownloadImageR POST
+/image/json/#Int SendJSONR GET 
