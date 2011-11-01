@@ -9,12 +9,13 @@ import Helpers.Document
 import qualified Data.Text as T
 import Data.Maybe (fromJust)
 import Yesod.Comments
-import Forms.Vote
+import Forms.Image
 import Yesod.Goodies.Time
 getImageR :: ImagesId -> Handler RepHtml
 getImageR id = do
-                ((iresult, iwidget), ienctype) <- generateFormPost voteIForm
-                ((dresult, dwidget), denctype) <- generateFormPost voteDForm
+                ((iresult, iwidget), ienctype) <- generateFormPost (imageForm "/static/images/thumbsup.jpg")
+                ((delresult, delwidget), delenctype) <- generateFormPost (imageForm "/static/images/delete.png")
+                ((dresult, dwidget), denctype) <- generateFormPost (imageForm "/static/images/thumbsdown.jpg")
                 im <- getImage id
                 case im of
                     Just (iName,tag,votes,cTime) ->do 

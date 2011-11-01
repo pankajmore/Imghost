@@ -6,10 +6,12 @@ module Helpers.Document
     , getExtension
     , getImage
     , getThumb
+    , deleteImage
     )where
 import Foundation
 import System.Random
 import Control.Applicative 
+import Directory (removeFile)
 {-
  - Generates a random name of length 20 containing chars from a-z, checks if
  - the database already contains that name, if calls itself again to do another
@@ -43,3 +45,14 @@ getExtension :: String ->  String
 getExtension = dropWhile (/='.')
 
 getImage id = fmap (\x -> (imagesImageName x,imagesImageTag x,imagesVotes x,imagesCreated x)) <$> runDB (get id)
+
+deleteImage id = do
+    iName <- fmap imagesImageName <$> runDB (get id)
+    case iName of
+        Just name -> do 
+            let thumbnail = getThumb name 
+            liftIO $ removeFile (uploadDirectory ++ thumbnail)
+            liftIO $ removeFile (uploadDirectory ++ name)
+            runDB (delete id)
+        _ -> setMessage "Image not Found"
+

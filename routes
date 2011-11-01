@@ -5,5 +5,6 @@
 /search SearchR GET
 /votei/#ImagesId VoteiR POST
 /voted/#ImagesId VotedR POST
+/delete/#ImagesId DeleteImageR POST
 /static StaticR Static getStatic
 /search/#String/#Int DisplayR GET
