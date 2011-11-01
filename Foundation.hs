@@ -10,10 +10,14 @@ module Foundation
     , defaultTags
     , Widget
     , Handler
+    , maybeAuth
+    , requireAuth
     , module Settings
     , module Yesod
+    , module Yesod.Goodies
     , module Models
     , module Yesod.Static
+    , AuthRoute(..)
     )where
 import Settings.StaticFiles
 import Settings
@@ -30,7 +34,7 @@ import Yesod.Comments.Management
 import Yesod.Comments.Storage
 import Yesod.Auth
 import Yesod.Auth.OpenId
-import Yesod.Goodies
+import Yesod.Goodies hiding (NotFound)
 import Data.Maybe (fromMaybe)
 import Web.ClientSession (getKey)
 
@@ -106,8 +110,15 @@ instance YesodAuth ImgHost where
 instance YesodComments ImgHost where
     getComment     = getCommentPersist
     storeComment   = storeCommentPersist
+    updateComment    = updateCommentPersist
     deleteComment  = deleteCommentPersist
     loadComments   = loadCommentsPersist
+    displayUser  uid = maybe' "anonymous" userName  =<< runDB (get uid)
+    displayEmail uid = maybe' ""          userEmail =<< runDB (get uid)
+
+maybe' :: Monad m => b -> (a -> Maybe b) -> Maybe a -> m b
+maybe' c f = return . fromMaybe c . maybe Nothing f
+
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 openConnectionCount :: Int
 openConnectionCount = 10

@@ -25,7 +25,7 @@ getImageR id = do
                                         urlbox <- lift newIdent
                                         tableProperty <- lift newIdent
                                         $(widgetFile "image")
-                                        addComments $ T.pack iName
+                                        addCommentsAuth $ T.pack iName
                     Nothing -> do setMessage "ID not found in the database"
                                   redirect RedirectTemporary RootR
 
