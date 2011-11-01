@@ -9,7 +9,7 @@ import Control.Applicative
 import qualified Data.Text as T
 postVotedR :: ImagesId ->Handler RepHtml
 postVotedR id = do
-    ((dresult, dwidget), denctype) <- runFormPost (imageForm "/static/images/thumbsdown.jpg") 
+    ((dresult, dwidget), denctype) <- runFormPost (imageForm images_thumbsdown_jpg) 
     case dresult of
         FormSuccess _ -> do 
                         runDB (update id [ImagesVotes -=. 1])
@@ -18,7 +18,7 @@ postVotedR id = do
 
 postVoteiR :: ImagesId ->Handler RepHtml
 postVoteiR id = do
-    ((iresult, iwidget), ienctype) <- runFormPost (imageForm "/static/images/thumbsup.jpg")
+    ((iresult, iwidget), ienctype) <- runFormPost (imageForm images_thumbsup_jpg)
     case iresult of
         FormSuccess _ -> do 
                         runDB (update id [ImagesVotes +=. 1])

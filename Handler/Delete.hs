@@ -9,7 +9,7 @@ import Control.Applicative
 import qualified Data.Text as T
 postDeleteImageR :: ImagesId ->Handler RepHtml
 postDeleteImageR id = do
-    ((iresult, iwidget), ienctype) <- runFormPost (imageForm "/static/images/delete.png")
+    ((iresult, iwidget), ienctype) <- runFormPost (imageForm images_delete_png)
     case iresult of
         FormSuccess _ -> do 
                         deleteImage id

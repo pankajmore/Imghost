@@ -11,6 +11,7 @@ module Foundation
     , Widget
     , Handler
     , module Settings
+    , module Settings.StaticFiles
     , module Yesod
     , module Models
     , module Yesod.Static
@@ -39,7 +40,9 @@ data ImgHost = ImgHost
 mkYesodData "ImgHost" $(parseRoutesFile "routes")
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 instance Yesod ImgHost where
-    approot _ = ""
+    approot _ = "http://localhost:5432"
+    maximumContentLength _ (Just (UploadR {})) = 32 * 1024 * 1024
+    maximumContentLength _ _ = 2 * 1024 * 1024
     defaultLayout widget = do
         mmsg <- getMessage
         pc <- widgetToPageContent $ do

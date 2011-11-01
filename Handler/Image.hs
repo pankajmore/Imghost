@@ -13,10 +13,10 @@ import Forms.Image
 import Yesod.Goodies.Time
 getImageR :: ImagesId -> Handler RepHtml
 getImageR id = do
-                ((iresult, iwidget), ienctype) <- generateFormPost (imageForm "/static/images/thumbsup.jpg")
-                ((delresult, delwidget), delenctype) <- generateFormPost (imageForm "/static/images/delete.png")
-                ((dresult, dwidget), denctype) <- generateFormPost (imageForm "/static/images/thumbsdown.jpg")
-                ((downresult, downwidget), downenctype) <- generateFormPost (imageForm "/static/images/download.jpg")
+                ((iresult, iwidget), ienctype) <- generateFormPost (imageForm images_thumbsup_jpg)
+                ((delresult, delwidget), delenctype) <- generateFormPost (imageForm images_delete_png)
+                ((dresult, dwidget), denctype) <- generateFormPost (imageForm images_thumbsdown_jpg)
+                ((downresult, downwidget), downenctype) <- generateFormPost (imageForm images_download_jpg)
                 im <- getImage id
                 case im of
                     Just (iName,tag,caption,votes,cTime) ->do 
