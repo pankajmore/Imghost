@@ -20,8 +20,6 @@ getImageR id = do
                 im <- getImage id
                 case im of
                     Just (iName,tag,caption,votes,cTime) ->do 
-                                    let image = sUploadDirectory ++ (iName)
-                                    let image2 = getThumb image
                                     createdTime <- humanReadableTime cTime
                                     defaultLayout $ do
                                         urlbox <- lift newIdent

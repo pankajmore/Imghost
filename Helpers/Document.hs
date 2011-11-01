@@ -7,11 +7,13 @@ module Helpers.Document
     , getImage
     , getThumb
     , deleteImage
+    , staticUpload
     )where
 import Foundation
 import System.Random
 import Control.Applicative 
 import Directory (removeFile)
+import qualified Data.Text as T
 {-
  - Generates a random name of length 20 containing chars from a-z, checks if
  - the database already contains that name, if calls itself again to do another
@@ -56,3 +58,5 @@ deleteImage id = do
             runDB (delete id)
         _ -> setMessage "Image not Found"
 
+staticUpload :: String -> StaticRoute 
+staticUpload x = StaticRoute (map T.pack ["upload",x]) [("","")]    
