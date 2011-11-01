@@ -18,7 +18,7 @@ getImageR id = do
                 ((dresult, dwidget), denctype) <- generateFormPost (imageForm "/static/images/thumbsdown.jpg")
                 im <- getImage id
                 case im of
-                    Just (iName,tag,votes,cTime) ->do 
+                    Just (iName,tag,caption,votes,cTime) ->do 
                                     let image = sUploadDirectory ++ (iName)
                                     let image2 = getThumb image
                                     createdTime <- humanReadableTime cTime

@@ -6,6 +6,7 @@
 <p>
 <a href=#{image}>
     <img src=#{image} alt="Angry face" height="300">
+<p> #{caption}
 <form method=post action=@{DeleteImageR id} enctype=#{delenctype}> 
     ^{delwidget}
 <table .#{tableProperty}>

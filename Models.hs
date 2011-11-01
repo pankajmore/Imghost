@@ -10,12 +10,13 @@ share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persist|
 Images
     imageName String
     imageTag String
+    caption String
     votes Int
     created UTCTime
     ImageName imageName
 |]
 data Img = Img
-    { img :: FileInfo 
+    { img :: FileInfo
     , tags :: Text
     }deriving Show
 
