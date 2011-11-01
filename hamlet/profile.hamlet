@@ -15,4 +15,6 @@
 
   <p .links>
     <a href="@{EditProfileR}">edit your profile
+    \ | 
+    <a href="@{CommentsAdminR OverviewR}">manage your comments
 
