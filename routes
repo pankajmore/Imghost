@@ -1,10 +1,15 @@
 / RootR GET
+/auth AuthR Auth getAuth
 /upload UploadR POST
 /image/#ImagesId ImageR GET POST
 /recent RecentR GET
 /search SearchR GET
+/profile               ProfileR     GET
+/profile/edit          EditProfileR GET POST
 /votei/#ImagesId VoteiR POST
 /voted/#ImagesId VotedR POST
 /delete/#ImagesId DeleteImageR POST
 /static StaticR Static getStatic
 /search/#String/#Int DisplayR GET
+/comments              CommentsAdminR CommentsAdmin getCommentsAdmin
+

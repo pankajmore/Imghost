@@ -14,6 +14,16 @@ Images
     votes Int
     created UTCTime
     ImageName imageName
+
+User
+    name  Text Maybe Update
+    email Text Maybe Update
+    admin Bool default=false Eq Update
+
+Ident
+    ident Text   Asc
+    user  UserId Eq
+    UniqueIdent ident
 |]
 data Img = Img
     { img :: FileInfo

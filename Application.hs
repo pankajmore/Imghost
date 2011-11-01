@@ -13,6 +13,8 @@ import Handler.Display
 import Handler.Image
 import Handler.Vote
 import Handler.Delete
+import Handler.Profile
+import Yesod.Auth
 import Yesod.Comments.Management
 import Yesod.Comments.Storage
 import Data.Dynamic (Dynamic, toDyn)
