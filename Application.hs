@@ -15,6 +15,7 @@ import Handler.Vote
 import Handler.Download
 import Handler.SendJSON
 import Handler.Delete
+import Handler.Caption
 import Yesod.Comments.Management
 import Yesod.Comments.Storage
 import Data.Dynamic (Dynamic, toDyn)

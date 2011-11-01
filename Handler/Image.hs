@@ -10,6 +10,7 @@ import qualified Data.Text as T
 import Data.Maybe (fromJust)
 import Yesod.Comments
 import Forms.Image
+import Forms.Caption 
 import Yesod.Goodies.Time
 getImageR :: ImagesId -> Handler RepHtml
 getImageR id = do
@@ -17,6 +18,7 @@ getImageR id = do
                 ((delresult, delwidget), delenctype) <- generateFormPost (imageForm images_delete_png)
                 ((dresult, dwidget), denctype) <- generateFormPost (imageForm images_thumbsdown_jpg)
                 ((downresult, downwidget), downenctype) <- generateFormPost (imageForm images_download_jpg)
+                ((capresult, capwidget), capenctype) <- generateFormPost captionForm
                 im <- getImage id
                 case im of
                     Just (iName,tag,caption,votes,cTime) ->do 

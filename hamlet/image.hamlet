@@ -5,8 +5,10 @@
 <input .#{urlbox} type=textbox value=@{StaticR $ staticUpload (getThumb iName)} readonly>
 <p>
 <a href=@{StaticR $ staticUpload iName}>
-    <img src=@{StaticR $ staticUpload (getThumb iName)} alt="Angry face" height="300">
+    <img src=@{StaticR $ staticUpload iName} alt="Angry face" height="300">
 <p> #{caption}
+<form method=post action=@{CaptionR id} enctype=#{capenctype}> 
+    ^{capwidget}
 <form method=post action=@{DownloadImageR id} enctype=#{downenctype}> 
     ^{downwidget}
 <form method=post action=@{DeleteImageR id} enctype=#{delenctype}> 
