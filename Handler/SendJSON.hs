@@ -12,7 +12,7 @@ import Data.Aeson
 getSendJSONR :: Int -> Handler RepJson 
 getSendJSONR len= do
     imgList <- map (getTriple . snd) <$> runDB (selectList [] [Desc ImagesCreated, LimitTo len])
-    return . RepJson . toContent . encode . toJSON $ map convert imgList
+    jsonToRepJson.toJSON $ map convert imgList
  where 
     convert (name,tag,caption) = JsonImage (uploadDirectory ++ name) caption tag
     getTriple x = (imagesImageName x,imagesImageTag x,imagesCaption x)
