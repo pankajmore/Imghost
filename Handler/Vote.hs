@@ -11,7 +11,8 @@ postVotedR :: ImagesId ->Handler RepHtml
 postVotedR id = do
     ((dresult, dwidget), denctype) <- runFormPost (imageForm images_thumbsdown_jpg) 
     case dresult of
-        FormSuccess _ -> do 
+        FormSuccess _ -> do
+                        requireAuth
                         runDB (update id [ImagesVotes -=. 1])
                         redirect RedirectTemporary $ ImageR id
         _ ->  redirect RedirectTemporary $ ImageR id
@@ -21,6 +22,7 @@ postVoteiR id = do
     ((iresult, iwidget), ienctype) <- runFormPost (imageForm images_thumbsup_jpg)
     case iresult of
         FormSuccess _ -> do 
+                        requireAuth
                         runDB (update id [ImagesVotes +=. 1])
                         redirect RedirectTemporary $ ImageR id 
         _ ->  redirect RedirectTemporary $ ImageR id
