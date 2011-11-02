@@ -41,7 +41,8 @@ library
                      Handler.Root
                      Handler.Search
                      Handler.Upload
-
+                     Handler.Image
+                     Settings.StaticFiles
 
 executable imghost
     if flag(devel)

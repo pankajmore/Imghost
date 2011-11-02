@@ -28,7 +28,7 @@ import Text.Hamlet (hamletFile)
 import Yesod.Default.Config
 import Yesod.Default.Util (addStaticContentExternal)
 import Yesod.Logger (Logger, logLazyText)
-
+import Control.Applicative
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 data ImgHost = ImgHost 
         { settings :: AppConfig DefaultEnv
@@ -54,10 +54,9 @@ instance RenderMessage ImgHost FormMessage where
 
 instance YesodPersist ImgHost where
     type YesodPersistBackend ImgHost = SqlPersist
-    runDB action = liftIOHandler $ do
-            ImgHost _  _ _ pool <- getYesod
-            runSqlPool action pool
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    runDB action = liftIOHandler $ 
+           connPool <$> getYesod >>= runSqlPool action
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 openConnectionCount :: Int
 openConnectionCount = 10
 uploadDirectory :: String
