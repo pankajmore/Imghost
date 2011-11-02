@@ -13,7 +13,7 @@ import Forms.Image
 import Forms.Caption 
 import Yesod.Goodies.Time
 getImageR :: ImagesId -> Handler RepHtml
-getImageR id = do
+getImageR id = do 
                 ((iresult, iwidget), ienctype) <- generateFormPost (imageForm images_thumbsup_jpg)
                 ((delresult, delwidget), delenctype) <- generateFormPost (imageForm images_delete_png)
                 ((dresult, dwidget), denctype) <- generateFormPost (imageForm images_thumbsdown_jpg)
@@ -35,6 +35,8 @@ getImageR id = do
                                         urlbox <- lift newIdent
                                         tableProperty <- lift newIdent
                                         $(widgetFile "image")
+                                        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"
+                                        addScript $ StaticR js_hideSubmit_js
                                         addCommentsAuth $ T.pack iName
                     Nothing -> do setMessage "ID not found in the database"
                                   redirect RedirectTemporary RootR
