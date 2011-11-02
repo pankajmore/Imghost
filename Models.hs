@@ -37,11 +37,12 @@ Ident
 data JsonImage = JsonImage 
     { name :: String
     , caption :: String
-    , tag :: String 
+    , tag :: String
+    , lnk :: Text
     } deriving Show 
 
 instance ToJSON JsonImage where 
-    toJSON image = object [T.pack "src" .= (name image),T.pack "name" .= (caption image) ,T.pack "tag" .= (tag image)]
+    toJSON image = object ["link" .= (lnk image),"src" .= (name image),"name" .= (caption image) ,"tag" .= (tag image)]
 
 data Img = Img
     { img :: FileInfo

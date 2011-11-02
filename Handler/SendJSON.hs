@@ -11,8 +11,9 @@ import qualified Blaze.ByteString.Builder as BB
 import Data.Aeson
 getSendJSONR :: Int -> Handler RepJson 
 getSendJSONR len= do
-    imgList <- map (getTriple . snd) <$> runDB (selectList [] [Desc ImagesCreated, LimitTo len])
+    m <- getYesod
+    imgList <- map (getQuad m) <$> runDB (selectList [] [Desc ImagesCreated, LimitTo len])
     jsonToRepJson.toJSON $ map convert imgList
  where 
-    convert (name,tag,caption) = JsonImage (sUploadDirectory ++ name) caption tag
-    getTriple x = (imagesImageName x,imagesImageTag x,imagesCaption x)
+    convert (name,tag,caption,lnk) = JsonImage (sUploadDirectory ++ name) caption tag lnk
+    getQuad m x = (imagesImageName $ snd x,imagesImageTag $ snd x,imagesCaption $ snd x, yesodRender m (ImageR $ fst x) [])
