@@ -10,6 +10,8 @@ module Helpers.Document
     , deleteImage
     , staticUpload
     , requireAdmin
+    , canIVote
+    , canDVote
     )where
 import Foundation
 import System.Random
@@ -72,4 +74,25 @@ requireAdmin ownerid = do
         Just (Just x) -> if currentid == x then return () else permissionDenied "You are not authorized to touch this!!"
       --  _ -> permissionDenied "Random reason"
 staticUpload :: String -> StaticRoute 
-staticUpload x = StaticRoute (map T.pack ["upload",x]) [("","")]    
+staticUpload x = StaticRoute (map T.pack ["upload",x]) [("","")]   
+
+canIVote :: UserId -> ImagesId -> Handler Bool
+canIVote uid id = do 
+    alreadyInVotes <- runDB (getBy $ UniqueVote uid id)
+    case alreadyInVotes of
+        Nothing -> return True
+        Just (qid , val) -> 
+            case votesValue val of
+                1 -> return False 
+                _ -> return True
+
+canDVote :: UserId -> ImagesId -> Handler Bool
+canDVote uid id = do 
+    alreadyInVotes <- runDB (getBy $ UniqueVote uid id)
+    case alreadyInVotes of
+        Nothing -> return True
+        Just (qid , val) -> 
+            case votesValue val of
+                (-1) -> return False 
+                _ -> return True
+
