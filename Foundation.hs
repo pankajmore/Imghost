@@ -9,8 +9,6 @@ module Foundation
     , defaultTags
     , Widget
     , Handler
-    , maybeAuth
-    , requireAuth
     , module Settings
     , module Settings.StaticFiles
     , module Yesod
@@ -18,7 +16,6 @@ module Foundation
     , module Models
     , module Yesod.Static
     , module Yesod.Auth
-    , AuthRoute(..)
     )where
 import Settings.StaticFiles
 import Settings
