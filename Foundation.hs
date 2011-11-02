@@ -38,7 +38,7 @@ import Yesod.Auth.BrowserId
 import Yesod.Goodies hiding (NotFound)
 import Data.Maybe (fromMaybe)
 import Web.ClientSession (getKey)
-
+import Control.Applicative
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 data ImgHost = ImgHost 
@@ -81,9 +81,8 @@ instance RenderMessage ImgHost FormMessage where
 
 instance YesodPersist ImgHost where
     type YesodPersistBackend ImgHost = SqlPersist
-    runDB action = liftIOHandler $ do
-            ImgHost _ pool <- getYesod
-            runSqlPool action pool
+    runDB action = liftIOHandler $ 
+            connPool <$> getYesod >>= runSqlPool action
 
 instance YesodAuth ImgHost where
     type AuthId ImgHost = UserId
