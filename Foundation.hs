@@ -6,13 +6,13 @@ module Foundation
     , resourcesImgHost
     , openConnectionCount
     , uploadDirectory
-    , sUploadDirectory
     , defaultTags
     , Widget
     , Handler
     , maybeAuth
     , requireAuth
     , module Settings
+    , module Settings.StaticFiles
     , module Yesod
     , module Yesod.Goodies
     , module Models
@@ -53,7 +53,8 @@ instance Yesod ImgHost where
     approot _ = "http://localhost:5432" --change this to website domain-name other openid wont work
     authRoute _ = Just $ AuthR LoginR
     encryptKey _ = fmap Just $ getKey "client_session_key.aes"
-
+    maximumContentLength _ (Just (UploadR {})) = 32 * 1024 * 1024
+    maximumContentLength _ _ = 2 * 1024 * 1024
     defaultLayout widget = do
         mmsg <- getMessage
         muid <- maybeAuth
@@ -127,8 +128,6 @@ openConnectionCount :: Int
 openConnectionCount = 10
 uploadDirectory :: String
 uploadDirectory = "./static/upload/"
-sUploadDirectory :: String
-sUploadDirectory = tail uploadDirectory
 defaultTags :: [(Text,Text)]
 defaultTags = [("Nature","Nature"),("Celebrity","Celebrity"),("Machines","Machines"),("NSFW","NSFW"),("Other","Other")]
 

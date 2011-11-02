@@ -12,9 +12,12 @@ import Handler.Search
 import Handler.Display
 import Handler.Image
 import Handler.Vote
+import Handler.Download
+import Handler.SendJSON
 import Handler.Delete
 import Handler.Profile
 import Yesod.Auth
+import Handler.Caption
 import Yesod.Comments.Management
 import Yesod.Comments.Storage
 import Data.Dynamic (Dynamic, toDyn)
