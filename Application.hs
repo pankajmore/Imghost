@@ -21,16 +21,24 @@ import Handler.Caption
 import Yesod.Comments.Management
 import Yesod.Comments.Storage
 import Data.Dynamic (Dynamic, toDyn)
+import Yesod.Default.Config
+import Yesod.Default.Main
+import Yesod.Default.Handlers
+import Yesod.Logger (Logger)
+import Data.ByteString (ByteString)
 
 mkYesodDispatch "ImgHost" resourcesImgHost
-mainp :: IO ()
-mainp = withSqlitePool "test.db3" openConnectionCount $ \pool -> do
-    runSqlPool (runMigration migrateAll) pool
-    runSqlPool (runMigration migrateComments) pool
-    warpDebug 5432 $ ImgHost (Static defaultWebAppSettings) pool
+
+withImgHost :: AppConfig DefaultEnv -> Logger -> (Application -> IO ()) -> IO ()
+withImgHost conf logger f = do
+    withSqlitePool "test.db3" openConnectionCount $ \pool -> do
+        runSqlPool (runMigration migrateAll) pool
+        runSqlPool (runMigration migrateComments) pool
+        let h = ImgHost conf logger (Static defaultWebAppSettings) pool
+        defaultRunner f h
 
 
 -- for yesod devel
-{-withDevelAppPort :: Dynamic-}
-{-withDevelAppPort = toDyn $ defaultDevelApp withDevSite-}
+withDevelAppPort :: Dynamic
+withDevelAppPort = toDyn $ defaultDevelApp withImgHost
 

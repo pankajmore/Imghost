@@ -39,10 +39,14 @@ import Yesod.Goodies hiding (NotFound)
 import Data.Maybe (fromMaybe)
 import Web.ClientSession (getKey)
 import Control.Applicative
-
+import Yesod.Default.Config
+import Yesod.Default.Util (addStaticContentExternal)
+import Yesod.Logger (Logger, logLazyText)
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 data ImgHost = ImgHost 
-        { getStatic :: Static
+        { settings :: AppConfig DefaultEnv
+        , getLogger :: Logger
+        , getStatic :: Static -- ^ Settings for static file serving.
         , connPool  :: ConnectionPool
         }
 mkYesodData "ImgHost" $(parseRoutesFile "routes")
@@ -81,8 +85,7 @@ instance RenderMessage ImgHost FormMessage where
 
 instance YesodPersist ImgHost where
     type YesodPersistBackend ImgHost = SqlPersist
-    runDB action = liftIOHandler $ 
-            connPool <$> getYesod >>= runSqlPool action
+    runDB action = liftIOHandler $ connPool <$> getYesod >>= runSqlPool action
 
 instance YesodAuth ImgHost where
     type AuthId ImgHost = UserId
@@ -121,6 +124,7 @@ maybe' :: Monad m => b -> (a -> Maybe b) -> Maybe a -> m b
 maybe' c f = return . fromMaybe c . maybe Nothing f
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 openConnectionCount :: Int
 openConnectionCount = 10
 uploadDirectory :: String

@@ -28,20 +28,29 @@ library
     else
         buildable: False
 
-    hs-source-dirs:  .
     exposed-modules: Application
     other-modules:   Foundation
                      Models
                      Settings
                      Forms.Search
                      Forms.Upload
+                     Forms.Caption
+                     Forms.Profile
+                     Forms.Image
                      Helpers.Document
                      Handler.Display
                      Handler.Recent
                      Handler.Root
                      Handler.Search
                      Handler.Upload
-
+                     Handler.Image
+                     Handler.Profile
+                     Handler.Vote
+                     Handler.Download
+                     Handler.Caption
+                     Handler.SendJSON
+                     Handler.Delete
+                     Settings.StaticFiles
 
 executable imghost
     if flag(devel)
@@ -55,7 +64,6 @@ executable imghost
         ghc-options: -Wall -threaded -O2
 
     main-is:        main.hs
-    hs-source-dirs: .
 
     build-depends: base  >= 4   && < 5
                  , yesod >= 0.9 && < 1.0
@@ -76,17 +84,13 @@ executable imghost
                  , random
                  , process
                  , clientsession
+                 , aeson-native
+                 , haskell98
  --                , persistent
  --                , persistent-template
                  , persistent-sqlite 
                  , hamlet                >= 0.10 && < 0.11
- --                , shakespeare-css       >= 0.10 && < 0.11
- --                , shakespeare-js        >= 0.10 && < 0.11
- --                , shakespeare-text      >= 0.10 && < 0.11
- --                , template-haskell
- --                , transformers
- --                , warp
- --                , blaze-builder
+                 , blaze-builder
  --                , blaze-html
  --                , transformers
  --                , clientsession
