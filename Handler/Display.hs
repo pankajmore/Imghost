@@ -19,7 +19,7 @@ getDisplayR tagquery pageNumber = do
                                 ])
                         items <- runDB $ selectList [ ImagesImageTag ==. tagquery] []
                         let numberofitems = length items
-                        let pages = [1..numberofitems `div` resultsPerPage]
+                        let pages = [1..((numberofitems `div` resultsPerPage) + 1)]
                         defaultLayout $(widgetFile "display")
         where getPair i = (fst i , imagesImageName $ snd i) 
 
