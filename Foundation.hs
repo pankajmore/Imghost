@@ -6,6 +6,7 @@ module Foundation
     , resourcesImgHost
     , openConnectionCount
     , uploadDirectory
+    , sUploadDirectory
     , defaultTags
     , Widget
     , Handler
@@ -125,6 +126,8 @@ openConnectionCount :: Int
 openConnectionCount = 10
 uploadDirectory :: String
 uploadDirectory = "./static/upload/"
+sUploadDirectory :: String 
+sUploadDirectory = tail uploadDirectory
 defaultTags :: [(Text,Text)]
 defaultTags = [("Nature","Nature"),("Celebrity","Celebrity"),("Machines","Machines"),("NSFW","NSFW"),("Other","Other")]
 

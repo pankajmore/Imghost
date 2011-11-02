@@ -14,5 +14,5 @@ getSendJSONR len= do
     imgList <- map (getTriple . snd) <$> runDB (selectList [] [Desc ImagesCreated, LimitTo len])
     jsonToRepJson.toJSON $ map convert imgList
  where 
-    convert (name,tag,caption) = JsonImage (uploadDirectory ++ name) caption tag
+    convert (name,tag,caption) = JsonImage (sUploadDirectory ++ name) caption tag
     getTriple x = (imagesImageName x,imagesImageTag x,imagesCaption x)
