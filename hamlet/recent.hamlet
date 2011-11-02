@@ -1,3 +1,1 @@
-$forall i <- imgList
-    <a href=@{ImageR (fst i)}><img src=@{StaticR $ staticUpload (snd i)} alt="Angry face"/>
-    <br>
+<div id="sliderContainer" align="center">

@@ -12,5 +12,9 @@ getRecentR = do
                 imgList <- map getPair <$> runDB (selectList [] [Desc ImagesCreated, LimitTo 10])
                 defaultLayout $ do 
                                 setTitle "Recent Images"
+                                addStylesheet $ StaticR css_slider_min_css
+                                addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"
+                                addScript $ StaticR js_slider_js
+                                addScript $ StaticR js_demo_js
                                 $(widgetFile "recent")
         where getPair i = (fst i , getThumb (imagesImageName $ snd i)) 

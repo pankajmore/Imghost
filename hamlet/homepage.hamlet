@@ -4,3 +4,5 @@
 <form method=post action=@{UploadR} enctype=#{enctypeUpload}>
     ^{widgetUpload}        
         <input type=submit>
+<br>
+<div id="sliderContainer" align="center">
