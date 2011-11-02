@@ -23,6 +23,12 @@ User
     email Text Maybe Update
     admin Bool default=false Eq Update
 
+Votes
+    userid UserId
+    imageid ImagesId
+    value Int
+    UniqueVote userid imageid
+
 Ident
     ident Text   Asc
     user  UserId Eq
