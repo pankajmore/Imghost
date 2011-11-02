@@ -56,3 +56,10 @@ deleteImage id = do
             runDB (delete id)
         _ -> setMessage "Image not Found"
 
+requireAdmin :: Handler ()
+requireAdmin = do
+    (_, u) <- requireAuth
+    if userAdmin u
+        then return ()
+        else permissionDenied "User is not an admin"
+

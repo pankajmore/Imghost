@@ -17,6 +17,7 @@ module Foundation
     , module Yesod.Goodies
     , module Models
     , module Yesod.Static
+    , module Yesod.Auth
     , AuthRoute(..)
     )where
 import Settings.StaticFiles
@@ -34,6 +35,8 @@ import Yesod.Comments.Management
 import Yesod.Comments.Storage
 import Yesod.Auth
 import Yesod.Auth.OpenId
+import Yesod.Auth.Facebook
+import Yesod.Auth.BrowserId
 import Yesod.Goodies hiding (NotFound)
 import Data.Maybe (fromMaybe)
 import Web.ClientSession (getKey)
@@ -100,7 +103,7 @@ instance YesodAuth ImgHost where
                 _   <- insert $ Ident (credsIdent creds) uid
                 return $ Just uid
 
-    authPlugins = [ authOpenId ]
+    authPlugins = [ authOpenId, authBrowserId']
 
     loginHandler = defaultLayout $ do
         setTitle "Login"
