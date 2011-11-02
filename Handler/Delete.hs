@@ -12,7 +12,8 @@ postDeleteImageR id = do
     ((iresult, iwidget), ienctype) <- runFormPost (imageForm images_delete_png)
     case iresult of
         FormSuccess _ -> do 
-                        uid <- requireAuthId
+                        ownerid <- getOwner id
+                        requireAdmin ownerid
                         deleteImage id
                         redirect RedirectTemporary RootR
         _ ->  redirect RedirectTemporary $ ImageR id

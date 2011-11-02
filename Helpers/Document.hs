@@ -5,9 +5,11 @@ module Helpers.Document
     , getName
     , getExtension
     , getImage
+    , getOwner
     , getThumb
     , deleteImage
     , staticUpload
+    , requireAdmin
     )where
 import Foundation
 import System.Random
@@ -48,6 +50,8 @@ getExtension = dropWhile (/='.')
 
 getImage id = fmap (\x -> (imagesImageName x,imagesImageTag x,imagesCaption x,imagesVotes x,imagesCreated x)) <$> runDB (get id)
 
+getOwner id = fmap imagesOwner <$> runDB (get id)
+
 deleteImage id = do
     iName <- fmap imagesImageName <$> runDB (get id)
     case iName of
@@ -58,12 +62,14 @@ deleteImage id = do
             runDB (delete id)
         _ -> setMessage "Image not Found"
 
-requireAdmin :: Handler ()
-requireAdmin = do
-    (_, u) <- requireAuth
-    if userAdmin u
-        then return ()
-        else permissionDenied "User is not an admin"
 
+--requireAdmin :: Handler ()
+requireAdmin ownerid = do
+    currentid <- requireAuthId
+    case ownerid of 
+        Nothing -> permissionDenied "Image not found"
+        Just (Nothing) -> permissionDenied "This image is orphan"
+        Just (Just x) -> if currentid == x then return () else permissionDenied "You are not authorized to touch this!!"
+      --  _ -> permissionDenied "Random reason"
 staticUpload :: String -> StaticRoute 
 staticUpload x = StaticRoute (map T.pack ["upload",x]) [("","")]    
