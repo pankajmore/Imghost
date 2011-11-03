@@ -27,19 +27,21 @@ fromSqlImage y img = Image
     , created = sqlImageCreated img
     }
 
+-- get an Image by its id from the database
 getImagePersist :: (YesodPersist m , PersistBackend ( YesodPersistBackend m) (GGHandler s m IO)) => SqlImageId -> GHandler s m (Maybe Image)
 getImagePersist id  = return . fmap (fromSqlImage . snd) =<< runDB $ get id
 
+-- stores the given Image In the database
 storeImagePersist :: (YesodPersist m , PersistBackend ( YesodPersistBackend m) (GGHandler s m IO)) => Image -> GHandler s m ()
 storeImagePersist image = return . const () =<< runDB (insert $ toSqlImage image)
 
-
+-- deletes the given Image from the database
 deleteImagePersist :: (YesodPersist m , PersistBackend ( YesodPersistBackend m) (GGHandler s m IO)) => Image -> GHandler s m ()
 deleteImagePersist image = return . const () =<< runDB (deleteBy $ UniqueName (name image))
 
 -- Updates only caption and votes 
-updateCommentPersist :: (YesodPersist m, PersistBackend (YesodPersistBackend m) (GGHandler s m IO)) => Comment -> Comment -> GHandler s m ()
-updateCommentPersist old new = do
+updateImagePersist :: (YesodPersist m, PersistBackend (YesodPersistBackend m) (GGHandler s m IO)) => Comment -> Comment -> GHandler s m ()
+updateImagePersist old new = do
     mres <- runDB (getBy $ UniqueName (name old))
     case mres of
         Just (k,_) -> runDB $ update k [SqlImageVotes =. (votes new),SqlImageCaption =. (caption new) ]
@@ -48,8 +50,7 @@ updateCommentPersist old new = do
 
 
 instance ToJSON Image where 
-    toJSON image = object [ "link" .= name image
-                          , "src" .= name image
+    toJSON image = object [ "src" .= name image
                           , "name" .= caption image
                           , "tag" .= tag image
                           , "owner" .= owner image
