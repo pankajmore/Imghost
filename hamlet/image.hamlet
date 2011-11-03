@@ -17,7 +17,7 @@ $if boolDeleteImage
 <table .#{tableProperty}>
     <tr>
         <td> 
-            <p> Votes : #{votes} #
+            <p> Votes : #{votes image} #
         <td>
             $if boolDVote  
                 <form method=post action=@{VotedR id} enctype=#{denctype}> 
@@ -28,7 +28,7 @@ $if boolDeleteImage
                     ^{iwidget}
     <tr>
         <td>
-            <p> Tag : #{tag}
+            <p> Tag : #{tag image}
     <tr>
         <td>
             <p> Created : #{createdTime} 

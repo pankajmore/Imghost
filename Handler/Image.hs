@@ -19,7 +19,7 @@ getImageR id = do
                 ((dresult, dwidget), denctype) <- generateFormPost (imageForm images_thumbsdown_jpg)
                 ((downresult, downwidget), downenctype) <- generateFormPost (imageForm images_download_jpg)
                 ((capresult, capwidget), capenctype) <- generateFormPost captionForm
-                im <- getImage id
+                maybeImage <- getImagePersist id
                 maybeuid <- maybeAuthId
                 boolDeleteImage <- case maybeuid of
                                         Nothing -> return False
@@ -30,16 +30,17 @@ getImageR id = do
                                                 iVote <- canIVote uid id 
                                                 dVote <- canDVote uid id 
                                                 return (iVote,dVote)
-                case im of
-                    Just (iName,tag,caption,votes,cTime) ->do 
-                                    createdTime <- humanReadableTime cTime
+                case maybeImage of
+                    Just image ->do 
+                                    createdTime <- humanReadableTime $ created image
+                                    let iName = name image 
                                     defaultLayout $ do
                                         urlbox <- lift newIdent
                                         tableProperty <- lift newIdent
                                         $(widgetFile "image")
                                         addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"
                                         addScript $ StaticR js_hideSubmit_js
-                                        addCommentsAuth $ T.pack iName
+                                        addCommentsAuth $ name image
                     Nothing -> do setMessage "ID not found in the database"
                                   redirect RedirectTemporary RootR
 
