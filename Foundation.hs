@@ -127,10 +127,10 @@ maybe' c f = return . fromMaybe c . maybe Nothing f
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 openConnectionCount :: Int
 openConnectionCount = 10
-uploadDirectory :: String
+uploadDirectory :: Text
 uploadDirectory = "./static/upload/"
-sUploadDirectory :: String 
-sUploadDirectory = tail uploadDirectory
+sUploadDirectory :: Text
+sUploadDirectory = T.tail uploadDirectory
 defaultTags :: [(Text,Text)]
 defaultTags = [("Nature","Nature"),("Celebrity","Celebrity"),("Machines","Machines"),("NSFW","NSFW"),("Other","Other")]
 
