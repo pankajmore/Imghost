@@ -2,12 +2,10 @@
 {-# LANGUAGE TypeFamilies, QuasiQuotes, MultiParamTypeClasses,TemplateHaskell, OverloadedStrings #-}
 module Handler.Image (getImageR,postImageR) where
 import Foundation
-import Forms.Upload
-import Data.Time
+import Helpers.Storage 
 import qualified Data.ByteString.Lazy as L
 import Helpers.Document
 import qualified Data.Text as T
-import Data.Maybe (fromJust)
 import Yesod.Comments
 import Forms.Image
 import Forms.Caption 

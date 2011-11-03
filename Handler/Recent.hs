@@ -3,10 +3,6 @@
 {-# LANGUAGE QuasiQuotes #-}
 module Handler.Recent (getRecentR) where
 import Foundation
-import Forms.Upload
-import Models
-import Control.Applicative
-import Helpers.Document
 getRecentR :: Handler RepHtml
 getRecentR = defaultLayout $ do 
                                 setTitle "Recent Images"

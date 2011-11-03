@@ -11,6 +11,7 @@ module Foundation
     , Widget
     , Handler
     , module Settings
+    , module Data.Time
     , module Settings.StaticFiles
     , module Yesod
     , module Yesod.Goodies

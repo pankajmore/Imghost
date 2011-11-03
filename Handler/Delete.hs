@@ -5,6 +5,7 @@ import Foundation
 import Forms.Image
 import qualified Data.ByteString.Lazy as L
 import Helpers.Document
+import Helpers.Storage 
 import Control.Applicative
 import qualified Data.Text as T
 postDeleteImageR :: ImagesId ->Handler RepHtml
