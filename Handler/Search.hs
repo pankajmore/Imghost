@@ -12,9 +12,8 @@ getSearchR :: Handler RepHtml
 getSearchR = do
     ((result, widget), enctype) <- runFormGet searchForm
     case result of
-        FormSuccess tags -> do 
-                        let tagquery = T.unpack tags
-                        redirect RedirectTemporary $ DisplayR tagquery 1
+        FormSuccess tag -> do 
+                        redirect RedirectTemporary $ DisplayR tag 1
         _ -> do setMessage "SearchForm Error"
                 redirect RedirectTemporary RootR
 
