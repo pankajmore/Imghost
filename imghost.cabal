@@ -45,6 +45,7 @@ library
                      Handler.Upload
                      Handler.Image
                      Handler.Profile
+                     Handler.Json
                      Handler.Vote
                      Handler.Download
                      Handler.Caption

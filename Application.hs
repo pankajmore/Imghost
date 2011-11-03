@@ -16,6 +16,7 @@ import Handler.Download
 import Handler.SendJSON
 import Handler.Delete
 import Handler.Profile
+import Handler.Json
 import Yesod.Auth
 import Handler.Caption
 import Yesod.Comments.Management
