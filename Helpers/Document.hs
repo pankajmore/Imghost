@@ -55,17 +55,6 @@ getImage id = fmap (\x -> (imagesImageName x,imagesImageTag x,imagesCaption x,im
 
 getOwner id = fmap imagesOwner <$> runDB (get id)
 
-deleteImage id = do
-    iName <- fmap imagesImageName <$> runDB (get id)
-    case iName of
-        Just name -> do 
-            let thumbnail = getThumb name 
-            liftIO $ removeFile (uploadDirectory ++ thumbnail)
-            liftIO $ removeFile (uploadDirectory ++ name)
-            runDB (delete id)
-        _ -> setMessage "Image not Found"
-
-
 --requireAdmin :: Handler ()
 requireAdmin ownerid = do
     currentid <- requireAuthId

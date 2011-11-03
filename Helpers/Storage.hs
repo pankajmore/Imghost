@@ -2,6 +2,7 @@
 {-# LANGUAGE TypeFamilies, QuasiQuotes, MultiParamTypeClasses,TemplateHaskell, OverloadedStrings #-}
 module Helpers.Storage where
 import Foundation
+import Helpers.Document
 import Control.Applicative 
 import qualified Data.Text as T
 import Data.Text (Text)
@@ -38,6 +39,18 @@ storeImagePersist image = return . const () =<< runDB (insert $ toSqlImage image
 -- deletes the given Image from the database
 deleteImagePersist :: (YesodPersist m , PersistBackend ( YesodPersistBackend m) (GGHandler s m IO)) => Image -> GHandler s m ()
 deleteImagePersist image = return . const () =<< runDB (deleteBy $ UniqueName (name image))
+
+deleteImage :: (YesodPersist m , PersistBackend ( YesodPersistBackend m) (GGHandler s m IO)) => SqlImageId -> GHandler s m ()
+deleteImage id = do
+    image <- getImagePersist id
+    case iName of
+        Just name -> do 
+            let thumbnail = getThumb name 
+            liftIO $ removeFile (uploadDirectory ++ thumbnail)
+            liftIO $ removeFile (uploadDirectory ++ name)
+            deleteImagePersist image
+        _ -> setMessage "Image not Found"
+
 
 -- Updates only caption and votes 
 updateImagePersist :: (YesodPersist m, PersistBackend (YesodPersistBackend m) (GGHandler s m IO)) => Comment -> Comment -> GHandler s m ()
