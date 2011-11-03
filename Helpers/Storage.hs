@@ -65,18 +65,29 @@ getImageByTag :: (YesodPersist m, PersistBackend (YesodPersistBackend m) (GGHand
 getImageByTag t count offset = map getPair <$> runDB (selectList 
                                 [ ImagesImageTag ==. tagquery]
                                 [ Desc ImagesCreated
-                                , LimitTo 
-                                , OffsetBy $ (pageNumber - 1) * resultsPerPage
+                                , LimitTo count 
+                                , OffsetBy offset
                                 ])
  where 
     getPair (a,b) = (a, fromSqlImage b) 
 
-instance ToJSON Image where 
-    toJSON image = object [ "src" .= name image
-                          , "name" .= caption image
+data JsonImage = JsonImage 
+    { name :: Text
+    , link :: Text
+    , src :: Text
+    , tag :: Text
+    }
+toJsonImage :: Text -> Image -> JsonImage 
+toJsonImage lnk image = JsonImage 
+    { name = caption image 
+    , link = lnk
+    , src = T.append sUploadDirectory name 
+    , tag = tag image 
+    }
+instance ToJSON JsonImage where 
+    toJSON image = object [ "src" .= src image
+                          , "name" .= name image
                           , "tag" .= tag image
-                          , "owner" .= owner image
-                          , "votes" .= votes image 
-                          , "created" .= created image
+                          , "link" .= link image
                           ]
 
