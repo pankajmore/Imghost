@@ -60,7 +60,16 @@ updateImagePersist old new = do
         Just (k,_) -> runDB $ update k [SqlImageVotes =. (votes new),SqlImageCaption =. (caption new) ]
         _          -> return ()
 
-
+-- Get By tag 
+getImageByTag :: (YesodPersist m, PersistBackend (YesodPersistBackend m) (GGHandler s m IO)) => Text -> Int -> Int -> GHandler s m [(SqlImageId , Image)]
+getImageByTag t count offset = map getPair <$> runDB (selectList 
+                                [ ImagesImageTag ==. tagquery]
+                                [ Desc ImagesCreated
+                                , LimitTo 
+                                , OffsetBy $ (pageNumber - 1) * resultsPerPage
+                                ])
+ where 
+    getPair (a,b) = (a, fromSqlImage b) 
 
 instance ToJSON Image where 
     toJSON image = object [ "src" .= name image

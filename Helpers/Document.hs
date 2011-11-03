@@ -24,34 +24,36 @@ import qualified Data.Text as T
  - the database already contains that name, if calls itself again to do another
  - generation and check until it finds a unique name.
 -}
-getRandomName :: String -> GHandler ImgHost ImgHost String
+getRandomName :: Text -> GHandler ImgHost ImgHost Text
 getRandomName ending = do  
                     gen <- liftIO getStdGen  
                     let a = take 20 (randomRs ('a','z') gen) 
                     liftIO $ newStdGen
                     let isInDatabase = False
-                    isInDatabase <- checkDatabase (a ++ ending)
+                    let name = T.append a ending
+                    isInDatabase <- checkDatabase name
                     if (not isInDatabase)
-                        then return (a) --only need the filename not the extension name
+                        then return name -- return name.ext
                         else getRandomName ending
-checkDatabase :: String -> GHandler ImgHost ImgHost Bool
+
+checkDatabase :: Text -> GHandler ImgHost ImgHost Bool
 checkDatabase image = do 
-           maybeImage <- runDB (getBy $ ImageName image)
+           maybeImage <- runDB (getBy $ UniqueName image)
            case maybeImage of
                Just _ -> return True
                _ -> return False
 
-getName :: String ->  String
-getName = takeWhile (/='.')
+getName :: Text ->  Text
+getName = T.takeWhile (/='.')
 
-getThumb :: String -> String
-getThumb iName = getName iName ++ "-thumb" ++ getExtension iName
+getThumb :: Text -> Text
+getThumb iName = T.replace "." "-thumb." iName
 
 
-getExtension :: String ->  String
-getExtension = dropWhile (/='.')
+getExtension :: Text ->  Text
+getExtension = T.dropWhile (/='.')
 
-getImage id = fmap (\x -> (imagesImageName x,imagesImageTag x,imagesCaption x,imagesVotes x,imagesCreated x)) <$> runDB (get id)
+{-getImage id = fmap (\x -> (imagesImageName x,imagesImageTag x,imagesCaption x,imagesVotes x,imagesCreated x)) <$> runDB (get id)-}
 
 getOwner id = fmap imagesOwner <$> runDB (get id)
 
@@ -63,8 +65,8 @@ requireAdmin ownerid = do
         Just (Nothing) -> permissionDenied "This image is orphan"
         Just (Just x) -> if currentid == x then return () else permissionDenied "You are not authorized to touch this!!"
       --  _ -> permissionDenied "Random reason"
-staticUpload :: String -> StaticRoute 
-staticUpload x = StaticRoute (map T.pack ["upload",x]) [("","")]   
+staticUpload :: Text -> StaticRoute 
+staticUpload x = StaticRoute ["upload",x] [("","")]   
 
 canIVote :: UserId -> ImagesId -> Handler Bool
 canIVote uid id = do 
