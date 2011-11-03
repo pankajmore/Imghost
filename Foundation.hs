@@ -52,7 +52,7 @@ data ImgHost = ImgHost
 mkYesodData "ImgHost" $(parseRoutesFile "routes")
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 instance Yesod ImgHost where
-    approot _ = "http://localhost:5432" --change this to website domain-name other openid wont work
+    approot =  appRoot . settings --change this to website domain-name other openid wont work
     authRoute _ = Just $ AuthR LoginR
     encryptKey _ = fmap Just $ getKey "client_session_key.aes"
     maximumContentLength _ (Just (UploadR {})) = 32 * 1024 * 1024
