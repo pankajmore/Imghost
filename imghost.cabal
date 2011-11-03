@@ -49,7 +49,6 @@ library
                      Handler.Vote
                      Handler.Download
                      Handler.Caption
-                     Handler.SendJSON
                      Handler.Delete
                      Settings.StaticFiles
 

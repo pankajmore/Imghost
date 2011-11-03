@@ -13,7 +13,6 @@ import Handler.Display
 import Handler.Image
 import Handler.Vote
 import Handler.Download
-import Handler.SendJSON
 import Handler.Delete
 import Handler.Profile
 import Handler.Json

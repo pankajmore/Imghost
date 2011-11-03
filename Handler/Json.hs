@@ -19,10 +19,10 @@ getJsonR = do
     mCount <- lookupGetParam "count"
     mOffset <- lookupGetParam "offset"
     let offset = maybe 0 (read . T.unpack) mOffset
-    let search = maybe "Nature" (T.unpack) mSearch
+    let search = maybe [] (\x->[ ImagesImageTag ==. (T.unpack x)]) mSearch  -- change Query String To Text instead of String 
     let count = maybe 20 (read . T.unpack) mCount
     imgList <- map (getQuad m) <$> runDB (selectList 
-        [ ImagesImageTag ==. search] 
+        search 
         [ Desc ImagesCreated
         , LimitTo count 
         , OffsetBy offset

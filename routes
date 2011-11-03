@@ -14,5 +14,4 @@
 /search/#String/#Int DisplayR GET
 /comments              CommentsAdminR CommentsAdmin getCommentsAdmin
 /image/download/#ImagesId DownloadImageR POST
-/image/json/#Int SendJSONR GET
 /image/edit/caption/#ImagesId CaptionR POST
