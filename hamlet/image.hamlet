@@ -11,8 +11,9 @@
     ^{capwidget}
 <form method=post action=@{DownloadImageR id} enctype=#{downenctype}> 
     ^{downwidget}
-<form method=post action=@{DeleteImageR id} enctype=#{delenctype}> 
-    ^{delwidget}
+$if boolDeleteImage
+    <form method=post action=@{DeleteImageR id} enctype=#{delenctype}> 
+        ^{delwidget}
 <table .#{tableProperty}>
     <tr>
         <td> 

@@ -12,6 +12,7 @@ module Helpers.Document
     , requireAdmin
     , canIVote
     , canDVote
+    , canDeleteImage
     )where
 import Foundation
 import System.Random
@@ -96,3 +97,10 @@ canDVote uid id = do
                 (-1) -> return False 
                 _ -> return True
 
+canDeleteImage :: UserId -> ImagesId -> Handler Bool
+canDeleteImage uid id = do
+            ownerid <- getOwner id
+            case ownerid of
+                Nothing -> return False
+                Just Nothing -> return False
+                Just (Just oid) -> if uid == oid then return True else return False

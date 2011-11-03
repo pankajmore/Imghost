@@ -21,13 +21,15 @@ getImageR id = do
                 ((capresult, capwidget), capenctype) <- generateFormPost captionForm
                 im <- getImage id
                 maybeuid <- maybeAuthId
+                boolDeleteImage <- case maybeuid of
+                                        Nothing -> return False
+                                        Just uid -> canDeleteImage uid id
                 (boolIVote,boolDVote) <- case maybeuid of
                                             Nothing ->  return (True,True)
                                             Just uid -> do
                                                 iVote <- canIVote uid id 
                                                 dVote <- canDVote uid id 
                                                 return (iVote,dVote)
-
                 case im of
                     Just (iName,tag,caption,votes,cTime) ->do 
                                     createdTime <- humanReadableTime cTime
