@@ -5,18 +5,17 @@ module Models where
 import Yesod 
 import Database.Persist.Sqlite
 import Data.Text(Text)
-import qualified Data.Text as T 
 import Data.Time
-import Data.Aeson
+
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persist|
-Images
-    imageName String
-    imageTag String
+SqlImage
+    name Text
+    tag Text
     owner UserId Maybe
-    caption String
+    caption Text
     votes Int
     created UTCTime
-    ImageName imageName
+    UniqueName name
 
 User
     name  Text Maybe Update
@@ -34,15 +33,18 @@ Ident
     user  UserId Eq
     UniqueIdent ident
 |]
-data JsonImage = JsonImage 
-    { name :: String
-    , caption :: String
-    , tag :: String
-    , lnk :: Text
+
+data Image = Image 
+    { link :: Text
+    , name :: Text
+    , tag :: Text
+    , owner :: Maybe UserId
+    , caption :: Text
+    , votes :: Int
+    , created :: Text
     } deriving Show 
 
-instance ToJSON JsonImage where 
-    toJSON image = object ["link" .= (lnk image),"src" .= (name image),"name" .= (caption image) ,"tag" .= (tag image)]
+
 
 data Img = Img
     { img :: FileInfo

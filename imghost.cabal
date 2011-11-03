@@ -38,6 +38,7 @@ library
                      Forms.Profile
                      Forms.Image
                      Helpers.Document
+                     Helpers.Storage
                      Handler.Display
                      Handler.Recent
                      Handler.Root
