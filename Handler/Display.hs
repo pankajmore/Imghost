@@ -11,7 +11,7 @@ import Helpers.Document
 getDisplayR :: Text -> Int -> Handler RepHtml
 getDisplayR tagquery n = do
                         let count = 2
-                        imgList <- getImageByTag tagquery count ((n-1)*count) 
+                        imgList <- getImageByTag (Just tagquery) count ((n-1)*count) 
                         let numberOfItems = length imgList
                         let pages = [1..((numberOfItems `div` count) + 1)]
                         defaultLayout $(widgetFile "display")

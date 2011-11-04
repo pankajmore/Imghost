@@ -21,7 +21,7 @@ postUploadR = do
                                         randName <- getRandomName extension
                                         time <- liftIO getCurrentTime
                                         mid <- maybeAuthId
-                                        let image = Image { name = fileName fileInfo
+                                        let image = Image { name = randName
                                                     , tag = tags formImage 
                                                     , owner = mid 
                                                     , caption = getName $ fileName fileInfo
