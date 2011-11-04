@@ -1,3 +1,4 @@
+{-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE TypeFamilies, QuasiQuotes, MultiParamTypeClasses,TemplateHaskell, OverloadedStrings #-}
 module Helpers.Storage where
@@ -15,13 +16,13 @@ toSqlImage img = SqlImage
     , sqlImageOwner = owner img
     , sqlImageCaption = caption img 
     , sqlImageVotes = votes img
-    , sqlImageCreated = creadted img
+    , sqlImageCreated = created img
     }
     
-fromSqlImage :: Yesod y => SqlImage -> Image
-fromSqlImage y img = Image
+fromSqlImage :: SqlImage -> Image
+fromSqlImage img = Image
     { name  = sqlImageName img
-    , tag = sqlImageTag Img
+    , tag = sqlImageTag img
     , owner = sqlImageOwner img 
     , caption = sqlImageCaption img
     , votes = sqlImageVotes img
@@ -29,48 +30,52 @@ fromSqlImage y img = Image
     }
 
 -- get an Image by its id from the database
-getImagePersist :: (YesodPersist m , PersistBackend ( YesodPersistBackend m) (GGHandler s m IO)) => SqlImageId -> GHandler s m (Maybe Image)
-getImagePersist id  = return . fmap (fromSqlImage . snd) =<< runDB $ get id
+getImagePersist :: (YesodPersist m , PersistBackend ( YesodPersistBackend m) (GGHandler s m IO)) => Key (YesodPersistBackend m) SqlImage-> GHandler s m (Maybe Image)
+getImagePersist id  = do 
+                    maybeSqlImage <- runDB $ get id
+                    return $ fmap fromSqlImage maybeSqlImage 
 
 getImageByName :: (YesodPersist m , PersistBackend ( YesodPersistBackend m) (GGHandler s m IO)) => Text -> GHandler s m (Maybe Image)
-getImageByName name   = return . fmap (fromSqlImage . snd) =<< runDB (getBy $ UniqueName name )
+getImageByName name   = do 
+                         maybePair <- runDB (getBy $ UniqueName name )
+                         return $ fmap (fromSqlImage . snd) maybePair 
 
 -- stores the given Image In the database
-storeImagePersist :: (YesodPersist m , PersistBackend ( YesodPersistBackend m) (GGHandler s m IO)) => Image -> GHandler s m SqlImageId
+storeImagePersist :: (YesodPersist master , PersistBackend (YesodPersistBackend master) (GGHandler sub master IO)) => Image-> GHandler sub master (Key (YesodPersistBackend master) SqlImage)
 storeImagePersist image = runDB (insert $ toSqlImage image)
 
 -- deletes the given Image from the database
-deleteImagePersist :: (YesodPersist m , PersistBackend ( YesodPersistBackend m) (GGHandler s m IO)) => Image -> GHandler s m ()
+deleteImagePersist :: (YesodPersist master , PersistBackend (YesodPersistBackend master) (GGHandler sub master IO)) => Image -> GHandler sub master ()
 deleteImagePersist image = return . const () =<< runDB (deleteBy $ UniqueName (name image))
 
-deleteImage :: (YesodPersist m , PersistBackend ( YesodPersistBackend m) (GGHandler s m IO)) => SqlImageId -> GHandler s m ()
+deleteImage :: (YesodPersist master , PersistBackend (YesodPersistBackend master) (GGHandler sub master IO)) => Key (YesodPersistBackend master) SqlImage-> GHandler sub master ()
 deleteImage id = do
-    image <- getImagePersist id
-    case iName of
-        Just name -> do 
-            let thumbnail = getThumb name 
-            liftIO $ removeFile (uploadDirectory ++ thumbnail)
-            liftIO $ removeFile (uploadDirectory ++ name)
+    maybeImage <- getImagePersist id
+    case maybeImage of
+        Just image -> do 
+            let thumbnail = getThumb $ name image 
+            liftIO.removeFile $ T.unpack (T.append uploadDirectory thumbnail)
+            liftIO.removeFile $ T.unpack (T.append uploadDirectory  (name image))
             deleteImagePersist image
         _ -> setMessage "Image not Found"
 
 
 -- Updates only caption and votes 
-updateImagePersist :: (YesodPersist m, PersistBackend (YesodPersistBackend m) (GGHandler s m IO)) => Comment -> Comment -> GHandler s m ()
+updateImagePersist :: (YesodPersist master , PersistBackend (YesodPersistBackend master) (GGHandler sub master IO)) => Image -> Image -> GHandler sub master ()
 updateImagePersist old new = do
     mres <- runDB (getBy $ UniqueName (name old))
     case mres of
         Just (k,_) -> runDB $ update k [SqlImageVotes =. (votes new),SqlImageCaption =. (caption new) ]
         _          -> return ()
 
-updateById :: (YesodPersist m, PersistBackend (YesodPersistBackend m) (GGHandler s m IO),PersistEntity val) => Key (YesodPersistBackend m) val -> [Update val]-> GHandler s m ()
+updateById :: (YesodPersist master , PersistEntity val , PersistBackend (YesodPersistBackend master) (GGHandler sub master IO)) => Key (YesodPersistBackend master) val-> [Update val]-> GHandler sub master ()
 updateById id updateField = runDB $ update id updateField
 
 -- Get By tag 
-getImageByTag :: (YesodPersist m, PersistBackend (YesodPersistBackend m) (GGHandler s m IO)) => Text -> Int -> Int -> GHandler s m [(SqlImageId , Image)]
+getImageByTag :: (YesodPersist master,PersistBackend (YesodPersistBackend master) (GGHandler sub master IO)) =>Text-> Int-> Int-> GHandler sub master [(Key (YesodPersistBackend master) SqlImage,Image)]
 getImageByTag t count offset = map getPair <$> runDB (selectList 
-                                [ ImagesImageTag ==. tagquery]
-                                [ Desc ImagesCreated
+                                [ SqlImageTag ==. t]
+                                [ Desc SqlImageCreated
                                 , LimitTo count 
                                 , OffsetBy offset
                                 ])
@@ -87,7 +92,7 @@ toJsonImage :: Text -> Image -> JsonImage
 toJsonImage lnk image = JsonImage 
     { jName = caption image 
     , jLink = lnk
-    , jSrc = T.append sUploadDirectory name 
+    , jSrc = T.append sUploadDirectory (name image)
     , jTag = tag image 
     }
 instance ToJSON JsonImage where 
@@ -99,12 +104,12 @@ instance ToJSON JsonImage where
 ---------------------------------------------------------------------------------------------------
 --Votes Storage Functions 
 -- get an Image by its id from the database
-getVotesPersist :: (YesodPersist m , PersistBackend ( YesodPersistBackend m) (GGHandler s m IO)) => UserId -> SqlImageId -> GHandler s m (Maybe (VotesId,Votes))
+getVotePersist :: (YesodPersist master,PersistBackend(YesodPersistBackend master) (GGHandler sub master IO)) =>Key backend User-> Key backend SqlImage-> GHandler sub master (Maybe(Key (YesodPersistBackend master) (VotesGeneric backend),VotesGeneric backend))
 getVotePersist uid id  = runDB.getBy $ UniqueVote uid id
 
 
 -- stores the given Vote In the database
-storeVotesPersist :: (YesodPersist m , PersistBackend ( YesodPersistBackend m) (GGHandler s m IO)) => Votes -> GHandler s m ()
+storeVotesPersist :: (YesodPersist master,PersistEntity val,PersistBackend (YesodPersistBackend master) (GGHandler sub master IO)) =>val -> GHandler sub master ()
 storeVotesPersist vote = return . const () =<< runDB (insert vote)
 
 ---------------------------------------------------------------------------------------------------
@@ -116,7 +121,7 @@ storeVotesPersist vote = return . const () =<< runDB (insert vote)
 getRandomName :: Text -> GHandler ImgHost ImgHost Text
 getRandomName ending = do  
                     gen <- liftIO getStdGen  
-                    let a = take 20 (randomRs ('a','z') gen) 
+                    let a = T.pack $ take 20 (randomRs ('a','z') gen) 
                     liftIO $ newStdGen
                     let isInDatabase = False
                     let name = T.append a ending
@@ -133,8 +138,8 @@ checkDatabase image = do
                _ -> return False
 
 getOwner id = do
-    mayBeImage <- getImageById id  
-    return $ fmap owner maybeImage
+    mayBeImage <- getImagePersist id  
+    return $ fmap owner mayBeImage
 
 --requireAdmin :: Handler ()
 requireAdmin ownerid = do
@@ -146,7 +151,7 @@ requireAdmin ownerid = do
 
 canIVote :: UserId -> SqlImageId -> Handler Bool
 canIVote uid id = do 
-    alreadyInVotes <- getVotesPersist uid id 
+    alreadyInVotes <- getVotePersist uid id 
     case alreadyInVotes of
         Nothing -> return True
         Just (qid , val) -> 
@@ -156,7 +161,7 @@ canIVote uid id = do
 
 canDVote :: UserId -> SqlImageId -> Handler Bool
 canDVote uid id = do 
-    alreadyInVotes <- getVotesPersist uid id 
+    alreadyInVotes <- getVotePersist uid id 
     case alreadyInVotes of
         Nothing -> return True
         Just (qid , val) -> 
