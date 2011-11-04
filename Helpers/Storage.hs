@@ -72,17 +72,18 @@ updateById :: (YesodPersist master , PersistEntity val , PersistBackend (YesodPe
 updateById id updateField = runDB $ update id updateField
 
 -- Get By tag 
-getImageByTag :: (YesodPersist master,PersistBackend (YesodPersistBackend master) (GGHandler sub master IO)) => Maybe Text-> Int-> Int-> GHandler sub master [(Key (YesodPersistBackend master) SqlImage,Image)]
-getImageByTag maybeTag count offset = do 
+getImageByTag :: (YesodPersist master,PersistBackend (YesodPersistBackend master) (GGHandler sub master IO)) => Maybe Text-> Maybe Int-> Int-> GHandler sub master [(Key (YesodPersistBackend master) SqlImage,Image)]
+getImageByTag maybeTag maybeCount offset = do 
     let f = case maybeTag of 
                 Nothing -> []
                 Just t -> [ SqlImageTag ==. t]
-    map getPair <$> runDB (selectList 
-                          f 
-                          [ Desc SqlImageCreated
-                          , LimitTo count 
-                          , OffsetBy offset
-                          ])
+    let g = case maybeCount of 
+                Nothing -> [ Desc SqlImageCreated , OffsetBy offset ]
+                Just count -> [ Desc SqlImageCreated
+                              , LimitTo count 
+                              , OffsetBy offset
+                              ]
+    map getPair <$> runDB (selectList f g)
  where 
     getPair (a,b) = (a, fromSqlImage b) 
 

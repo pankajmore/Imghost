@@ -16,6 +16,6 @@ getJsonR = do
     mOffset <- lookupGetParam "offset"
     let offset = maybe 0 (\x -> either (\_->0) fst (TR.decimal x) ) mOffset  -- can not fail 
     let count = maybe 20  (\x -> either (\_->20) fst (TR.decimal x) ) mCount
-    imgList <- getImageByTag mSearch count offset
+    imgList <- getImageByTag mSearch (Just count) offset
     jsonToRepJson.toJSON $ map (\(a,b) -> toJsonImage (yesodRender m (ImageR a) [] ) b) imgList
 
