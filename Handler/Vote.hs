@@ -47,7 +47,7 @@ postVoteiR id = do
                             Nothing -> do 
                                 let vote = Votes { votesUserId = currentUserid
                                                            , votesImageId = id
-                                                           , votesValue = (-1)
+                                                           , votesValue = 1
                                                            }
                                 storeVotesPersist vote
                                 updateById id [SqlImageVotes +=. 1]
