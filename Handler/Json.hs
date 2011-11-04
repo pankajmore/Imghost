@@ -7,7 +7,7 @@ import Helpers.Storage
 import qualified Data.Text as T
 import Data.Text (Text)
 import Data.Aeson
-import qualified data.Text.Read as TR
+import qualified Data.Text.Read as TR
 getJsonR :: Handler RepJson
 getJsonR = do 
     m <- getYesod

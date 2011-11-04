@@ -10,8 +10,9 @@ module Foundation
     , defaultTags
     , Widget
     , Handler
+    , Text
     , module Settings
-    , module Data.Time
+    , UTCTime
     , module Settings.StaticFiles
     , module Yesod
     , module Yesod.Goodies
@@ -19,6 +20,7 @@ module Foundation
     , module Yesod.Static
     , module Yesod.Auth
     )where
+import Data.Time (UTCTime)
 import Settings.StaticFiles
 import Settings
 import Yesod
