@@ -11,5 +11,5 @@
     <ul>
 
     $forall i <- imgList
-        <a href=@{ImageR $ fst i}><img src=@{StaticR (staticUpload ( getThumb . name $ snd i))} alt="Angry face"/>
+        <a href=@{ImageR $ fst i}><img src="" alt="Angry face"/>
         <br>

@@ -8,7 +8,7 @@ import Helpers.Document
 import Helpers.Storage 
 import Control.Applicative
 import qualified Data.Text as T
-postDeleteImageR :: ImagesId ->Handler RepHtml
+postDeleteImageR :: SqlImageId ->Handler RepHtml
 postDeleteImageR id = do
     ((iresult, iwidget), ienctype) <- runFormPost (imageForm images_delete_png)
     case iresult of

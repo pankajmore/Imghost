@@ -13,7 +13,7 @@ getDisplayR tagquery n = do
                         let count = 2
                         imgList <- getImageByTag tagquery count ((n-1)*count) 
                         let numberOfItems = length imgList
-                        let pages = [1..((numberOfItems `div` resultsPerPage) + 1)]
+                        let pages = [1..((numberOfItems `div` count) + 1)]
                         defaultLayout $(widgetFile "display")
 
 

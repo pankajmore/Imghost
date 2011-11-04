@@ -10,7 +10,7 @@ import Yesod.Comments
 import Forms.Image
 import Forms.Caption 
 import Yesod.Goodies.Time
-getImageR :: ImagesId -> Handler RepHtml
+getImageR :: SqlImageId -> Handler RepHtml
 getImageR id = do 
                 ((iresult, iwidget), ienctype) <- generateFormPost (imageForm images_thumbsup_jpg)
                 ((delresult, delwidget), delenctype) <- generateFormPost (imageForm images_delete_png)

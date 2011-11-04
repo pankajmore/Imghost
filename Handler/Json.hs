@@ -15,8 +15,8 @@ getJsonR = do
     mCount <- lookupGetParam "count"
     mOffset <- lookupGetParam "offset"
     let offset = maybe 0 (\x -> either (\_->0) fst (TR.decimal x) ) mOffset  -- can not fail 
-    let search = maybe [] id mSearch  -- change Query String To Text instead of String 
+    let search = maybe "Nature" id mSearch  -- change Query String To Text instead of String 
     let count = maybe 20  (\x -> either (\_->20) fst (TR.decimal x) ) mCount
     imgList <- getImageByTag search count offset
-    jsonToRepJson.toJSON $ map (\(a,b) -> toJsonImage (yesodRender m (ImageR a)) b) imgList
+    jsonToRepJson.toJSON $ map (\(a,b) -> toJsonImage (yesodRender m (ImageR a) [] ) b) imgList
 

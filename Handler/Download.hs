@@ -9,7 +9,7 @@ import Helpers.Document
 import Control.Applicative
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
-postDownloadImageR :: ImagesId -> Handler ()
+postDownloadImageR :: SqlImageId -> Handler ()
 postDownloadImageR id = do
     ((downresult, downwidget), downenctype) <- runFormPost (imageForm images_download_jpg)
     case downresult of
@@ -17,11 +17,11 @@ postDownloadImageR id = do
             maybeImage <- getImagePersist id
             case maybeImage of 
                 Just image ->do 
-                    let filePath = uploadDirectory ++ (name image)
+                    let filePath = T.unpack $  T.append uploadDirectory  (name image)
                     let ext = getExtension $ name image
                     let cType    = T.encodeUtf8 $ T.append "image/" (T.tail ext)
-                    setHeader "Content-Disposition" (T.encodeUtf8.T.concat $ map T.pack [ "attachment; filename="
-                                                           ,caption,ext ])
+                    setHeader "Content-Disposition" (T.encodeUtf8 $ T.concat [ "attachment; filename="
+                                                           ,caption image,ext ])
                     sendFile cType filePath
                 _ -> redirect RedirectTemporary (ImageR id)
         _ -> redirect RedirectTemporary (ImageR id)

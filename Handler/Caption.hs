@@ -6,14 +6,17 @@ import Forms.Caption
 import Helpers.Document
 import Helpers.Storage 
 import qualified Data.Text as T
-postCaptionR :: ImagesId ->Handler RepHtml
+postCaptionR :: SqlImageId ->Handler RepHtml
 postCaptionR id = do
     ((result, widget), enctype) <- runFormPost captionForm
-    image <- getImagePersist id 
+    maybeImage <- getImagePersist id 
     case result of
         FormSuccess cap -> do 
-                        let newImage = image { caption = cap}
-                        updateImagePersist image newImage
+                        case maybeImage of 
+                            Just image -> do 
+                                let newImage = image { caption = cap}
+                                updateImagePersist image newImage
+                            _ -> return ()
                         redirect RedirectTemporary (ImageR id)
         _ ->  redirect RedirectTemporary $ ImageR id
     

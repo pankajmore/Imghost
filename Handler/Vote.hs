@@ -9,7 +9,7 @@ import Foundation
 import Forms.Image
 import Helpers.Document
 import Helpers.Storage
-postVotedR :: ImagesId ->Handler RepHtml
+postVotedR :: SqlImageId ->Handler RepHtml
 postVotedR id = do
     ((dresult, dwidget), denctype) <- runFormPost (imageForm images_thumbsdown_jpg) 
     case dresult of
@@ -36,7 +36,7 @@ postVotedR id = do
                         redirect RedirectTemporary $ ImageR id
         _ ->  redirect RedirectTemporary $ ImageR id
 
-postVoteiR :: ImagesId ->Handler RepHtml
+postVoteiR :: SqlImageId ->Handler RepHtml
 postVoteiR id = do
     ((iresult, iwidget), ienctype) <- runFormPost (imageForm images_thumbsup_jpg)
     case iresult of

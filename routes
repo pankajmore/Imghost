@@ -11,7 +11,7 @@
 /voted/#SqlImageId VotedR GET POST
 /delete/#SqlImageId DeleteImageR POST
 /static StaticR Static getStatic
-/search/#String/#Int DisplayR GET
+/search/#Text/#Int DisplayR GET
 /comments              CommentsAdminR CommentsAdmin getCommentsAdmin
 /image/download/#SqlImageId DownloadImageR POST
 /image/edit/caption/#SqlImageId CaptionR POST
