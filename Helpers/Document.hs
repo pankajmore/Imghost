@@ -20,5 +20,5 @@ getExtension :: Text ->  Text
 getExtension = T.dropWhile (/='.')
 
 staticUpload :: Text -> StaticRoute 
-staticUpload x = StaticRoute ["upload",x] [("","")]   
+staticUpload x = StaticRoute ["upload",x] []   
 
