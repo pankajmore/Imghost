@@ -1,0 +1,21 @@
+Default: &defaults
+  database: imghost.sqlite3
+  poolsize: 10
+
+Development:
+  <<: *defaults
+
+Test:
+  database: imghost_test.sqlite3
+  <<: *defaults
+
+Staging:
+  database: imghost_staging.sqlite3
+  poolsize: 100
+  <<: *defaults
+
+Production:
+  database: imghost_production.sqlite3
+  poolsize: 100
+  <<: *defaults
+

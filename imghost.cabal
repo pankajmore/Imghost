@@ -73,11 +73,8 @@ executable imghost
                  , yesod-persistent
                  , yesod-static
                  , yesod-default
-                 , wai-app-static
                  , yesod-comments < 0.6
                  , yesod-goodies == 0.0.5
- --                , wai-extra
- --                , containers
                  , bytestring
                  , text
                  , time
@@ -86,11 +83,16 @@ executable imghost
                  , clientsession
                  , aeson-native
                  , haskell98
- --                , persistent
- --                , persistent-template
-                 , persistent-sqlite 
+                 , persistent
+--                 , persistent-template
+                 , persistent-sqlite
+                 , template-haskell
                  , hamlet                >= 0.10 && < 0.11
                  , blaze-builder
+                 , shakespeare-css               >= 0.10       && < 0.11
+                 , shakespeare-js                >= 0.10       && < 0.11
+                 , shakespeare-text              >= 0.10       && < 0.11
+                 , hjsmin                        >= 0.0.14     && < 0.1
  --                , blaze-html
  --                , transformers
  --                , clientsession
