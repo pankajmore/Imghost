@@ -1,6 +1,6 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE TypeFamilies, QuasiQuotes, MultiParamTypeClasses,TemplateHaskell, OverloadedStrings #-}
-module Handler.Api (getApiR,postApiR) where
+module Handler.Api (postApiR) where
 import Foundation
 import Forms.Upload
 import Helpers.Document
@@ -38,7 +38,5 @@ postApiR = do
             else liftIO $ print "Not a default tag given"
         _ -> liftIO $ print "tag not given"
     return ()
-
-getApiR = postApiR
 
 
