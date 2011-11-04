@@ -33,8 +33,8 @@ getImagePersist :: (YesodPersist m , PersistBackend ( YesodPersistBackend m) (GG
 getImagePersist id  = return . fmap (fromSqlImage . snd) =<< runDB $ get id
 
 -- stores the given Image In the database
-storeImagePersist :: (YesodPersist m , PersistBackend ( YesodPersistBackend m) (GGHandler s m IO)) => Image -> GHandler s m ()
-storeImagePersist image = return . const () =<< runDB (insert $ toSqlImage image)
+storeImagePersist :: (YesodPersist m , PersistBackend ( YesodPersistBackend m) (GGHandler s m IO)) => Image -> GHandler s m SqlImageId
+storeImagePersist image = runDB (insert $ toSqlImage image)
 
 -- deletes the given Image from the database
 deleteImagePersist :: (YesodPersist m , PersistBackend ( YesodPersistBackend m) (GGHandler s m IO)) => Image -> GHandler s m ()
@@ -60,8 +60,8 @@ updateImagePersist old new = do
         Just (k,_) -> runDB $ update k [SqlImageVotes =. (votes new),SqlImageCaption =. (caption new) ]
         _          -> return ()
 
-updateImageById :: (YesodPersist m, PersistBackend (YesodPersistBackend m) (GGHandler s m IO),PersistEntity val) => SqlImageId -> [Update val]-> GHandler s m ()
-updateImageById id updateField = runDB $ update id updateField
+updateById :: (YesodPersist m, PersistBackend (YesodPersistBackend m) (GGHandler s m IO),PersistEntity val) => Key (YesodPersistBackend m) val -> [Update val]-> GHandler s m ()
+updateById id updateField = runDB $ update id updateField
 
 -- Get By tag 
 getImageByTag :: (YesodPersist m, PersistBackend (YesodPersistBackend m) (GGHandler s m IO)) => Text -> Int -> Int -> GHandler s m [(SqlImageId , Image)]
@@ -103,3 +103,4 @@ getVotePersist uid id  = runDB.getBy $ UniqueVote uid id
 -- stores the given Vote In the database
 storeVotesPersist :: (YesodPersist m , PersistBackend ( YesodPersistBackend m) (GGHandler s m IO)) => Votes -> GHandler s m ()
 storeVotesPersist vote = return . const () =<< runDB (insert vote)
+

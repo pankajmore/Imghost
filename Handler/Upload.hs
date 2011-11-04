@@ -4,8 +4,8 @@ module Handler.Upload (postUploadR) where
 import Foundation
 import Forms.Upload
 import Data.Time
-import qualified Data.ByteString.Lazy as L
 import Helpers.Document
+import Helpers.Storage
 import qualified Data.Text as T
 import System.Cmd (system)
 
@@ -13,21 +13,26 @@ postUploadR :: Handler RepHtml
 postUploadR = do
     ((res,widget),enctype) <- runFormPost uploadForm
     case res of 
-        FormSuccess r -> do let fileInfo = img r
-                            let name = T.unpack $ fileName fileInfo
-                            let extension = getExtension name
-                            let fileName = getName name 
-                            let tag = T.unpack $ tags r
-                            randName <- getRandomName extension
+        FormSuccess formImage -> do 
+                            let fileInfo = img formImage
+                            let extension = getExtension $ fileName fileInfo
                             let fullName = randName ++ extension
                             if T.isPrefixOf "image" (fileContentType fileInfo) 
                                 then do 
+                                        randName <- getRandomName extension
                                         time <- liftIO getCurrentTime
-                                        liftIO $ L.writeFile (uploadDirectory ++ randName ++ extension) $ fileContent fileInfo
-                                        liftIO $ system $ "convert " ++ uploadDirectory ++ randName ++ extension ++ " -thumbnail 100x100^ -gravity center -extent 100x100 " ++ uploadDirectory ++ randName ++ "-thumb" ++ extension
                                         mid <- maybeAuthId
-                                        id <- runDB (insert $ Images fullName tag mid fileName 0 time)
-                                        redirect RedirectTemporary (ImageR id)
+                                        let image = { name = fileName fileInfo
+                                                    , tag = tag formImage 
+                                                    , owner = mid 
+                                                    , caption = getName $ fileName fileInfo
+                                                    , votes = 0 
+                                                    , created = time
+                                                    }
+                                        liftIO $ L.writeFile (T.append uploadDirectory randName) $ fileContent fileInfo
+                                        liftIO $ system $ T.concat ["convert ",uploadDirectory,randName," -thumbnail 100x100^ -gravity center -extent 100x100 ",uploadDirectory,getThumb randName]
+                                        id <- storeImagePersist image
+                                        redirect RedirectTemporary $ ImageR id
                                 else do 
                                         setMessage "Not an image File"
                                         redirect RedirectTemporary RootR

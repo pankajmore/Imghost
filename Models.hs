@@ -35,13 +35,12 @@ Ident
 |]
 
 data Image = Image 
-    { link :: Text
-    , name :: Text
+    { name :: Text
     , tag :: Text
     , owner :: Maybe UserId
     , caption :: Text
     , votes :: Int
-    , created :: Text
+    , created :: UTCTime
     } deriving Show 
 
 
