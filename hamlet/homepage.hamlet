@@ -1,5 +1,5 @@
 <form method=get action=@{SearchR} enctype=#{enctypeSearch}>
-    ^{widgetSearch}        
+    Search by ^{widgetSearch}        
         <input type=submit>
 <form method=post action=@{UploadR} enctype=#{enctypeUpload}>
     ^{widgetUpload}        
