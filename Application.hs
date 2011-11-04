@@ -14,6 +14,7 @@ import Handler.Image
 import Handler.Vote
 import Handler.Download
 import Handler.Delete
+import Handler.Api
 import Handler.Profile
 import Handler.Json
 import Yesod.Auth

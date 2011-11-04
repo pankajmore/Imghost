@@ -48,6 +48,7 @@ library
                      Handler.Profile
                      Handler.Json
                      Handler.Vote
+                     Handler.Api
                      Handler.Download
                      Handler.Caption
                      Handler.Delete

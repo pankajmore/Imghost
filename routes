@@ -15,3 +15,4 @@
 /comments              CommentsAdminR CommentsAdmin getCommentsAdmin
 /image/download/#SqlImageId DownloadImageR POST
 /image/edit/caption/#SqlImageId CaptionR POST
+/api/upload ApiR GET POST
