@@ -23,10 +23,10 @@ User
     admin Bool default=false Eq Update
 
 Votes
-    userid UserId
-    imageid ImagesId
+    userId UserId
+    imageId SqlImageId
     value Int
-    UniqueVote userid imageid
+    UniqueVote userId imageId
 
 Ident
     ident Text   Asc

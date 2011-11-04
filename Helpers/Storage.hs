@@ -60,6 +60,9 @@ updateImagePersist old new = do
         Just (k,_) -> runDB $ update k [SqlImageVotes =. (votes new),SqlImageCaption =. (caption new) ]
         _          -> return ()
 
+updateImageById :: (YesodPersist m, PersistBackend (YesodPersistBackend m) (GGHandler s m IO),PersistEntity val) => SqlImageId -> [Update val]-> GHandler s m ()
+updateImageById id updateField = runDB $ update id updateField
+
 -- Get By tag 
 getImageByTag :: (YesodPersist m, PersistBackend (YesodPersistBackend m) (GGHandler s m IO)) => Text -> Int -> Int -> GHandler s m [(SqlImageId , Image)]
 getImageByTag t count offset = map getPair <$> runDB (selectList 
@@ -90,4 +93,13 @@ instance ToJSON JsonImage where
                           , "tag" .= tag image
                           , "link" .= link image
                           ]
+---------------------------------------------------------------------------------------------------
+--Votes Storage Functions 
+-- get an Image by its id from the database
+getVotesPersist :: (YesodPersist m , PersistBackend ( YesodPersistBackend m) (GGHandler s m IO)) => UserId -> SqlImageId -> GHandler s m (Maybe (VotesId,Votes))
+getVotePersist uid id  = runDB.getBy $ UniqueVote uid id
 
+
+-- stores the given Vote In the database
+storeVotesPersist :: (YesodPersist m , PersistBackend ( YesodPersistBackend m) (GGHandler s m IO)) => Votes -> GHandler s m ()
+storeVotesPersist vote = return . const () =<< runDB (insert vote)
