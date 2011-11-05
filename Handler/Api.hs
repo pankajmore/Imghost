@@ -28,6 +28,7 @@ postApiR = do
                                           , owner = mid 
                                           , caption = getName $ fileName fileInfo
                                           , votes = 0 
+                                          , hits = 0
                                           , created = time
                                           }
                         liftIO $ L.writeFile (T.unpack $ T.append uploadDirectory randName) $ fileContent fileInfo

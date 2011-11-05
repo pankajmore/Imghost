@@ -6,6 +6,7 @@
 <p>
 <a href=@{StaticR $ staticUpload iName}>
     <img src=@{StaticR $ staticUpload iName} alt="Angry face" height="300">
+<p> Hits : #{hits image} #
 <p> #{caption image}
 <form method=post action=@{CaptionR id} enctype=#{capenctype}> 
     ^{capwidget}

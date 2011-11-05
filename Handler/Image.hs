@@ -17,6 +17,7 @@ getImageR id = do
                 ((dresult, dwidget), denctype) <- generateFormPost (imageForm images_thumbsdown_jpg)
                 ((downresult, downwidget), downenctype) <- generateFormPost (imageForm images_download_jpg)
                 ((capresult, capwidget), capenctype) <- generateFormPost captionForm
+                updateById id [SqlImageHits +=. 1]
                 maybeImage <- getImagePersist id
                 maybeuid <- maybeAuthId
                 boolDeleteImage <- case maybeuid of

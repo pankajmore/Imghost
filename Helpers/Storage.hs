@@ -16,6 +16,7 @@ toSqlImage img = SqlImage
     , sqlImageOwner = owner img
     , sqlImageCaption = caption img 
     , sqlImageVotes = votes img
+    , sqlImageHits = hits img
     , sqlImageCreated = created img
     }
     
@@ -26,6 +27,7 @@ fromSqlImage img = Image
     , owner = sqlImageOwner img 
     , caption = sqlImageCaption img
     , votes = sqlImageVotes img
+    , hits = sqlImageHits img
     , created = sqlImageCreated img
     }
 

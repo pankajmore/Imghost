@@ -14,6 +14,7 @@ SqlImage
     owner UserId Maybe
     caption Text
     votes Int
+    hits Int 
     created UTCTime
     UniqueName name
 
@@ -40,6 +41,7 @@ data Image = Image
     , owner :: Maybe UserId
     , caption :: Text
     , votes :: Int
+    , hits :: Int
     , created :: UTCTime
     } deriving Show 
 
