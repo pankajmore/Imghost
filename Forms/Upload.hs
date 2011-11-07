@@ -11,6 +11,7 @@ import Control.Applicative
 uploadForm :: Html -> Form ImgHost ImgHost (FormResult Img, Widget)
 uploadForm = renderTable $ Img
     <$> fileAFormReq ""
-    <*> areq (selectField defaultTags) "Tag " Nothing
+    {-<*> areq (selectField defaultTags) "Tag " Nothing-}
+    <*> areq (multiSelectField defaultTags) "Tag " Nothing
 
 

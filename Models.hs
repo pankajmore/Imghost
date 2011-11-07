@@ -1,3 +1,4 @@
+{-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE TypeFamilies, QuasiQuotes, MultiParamTypeClasses,TemplateHaskell, OverloadedStrings #-}
 module Models where
@@ -6,17 +7,23 @@ import Yesod
 import Database.Persist.Sqlite
 import Data.Text(Text)
 import Data.Time
-
+import Control.Applicative
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persist|
 SqlImage
     name Text
-    tag Text
+    tags Text
     owner UserId Maybe
     caption Text
     votes Int
     hits Int 
     created UTCTime
     UniqueName name
+
+Tag 
+    imageId SqlImageId 
+    tag Text
+    created UTCTime   -- To sort on the created time descending order
+    UniqueTag imageId tag 
 
 User
     name  Text Maybe Update
@@ -37,7 +44,7 @@ Ident
 
 data Image = Image 
     { name :: Text
-    , tag :: Text
+    , tags :: Text
     , owner :: Maybe UserId
     , caption :: Text
     , votes :: Int
@@ -48,7 +55,13 @@ data Image = Image
 
 
 data Img = Img
-    { img :: FileInfo
-    , tags :: Text
+    { iimg :: FileInfo
+    , itags :: [Text]
     }deriving Show
+
+
+
+
+
+
 

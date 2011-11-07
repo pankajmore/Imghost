@@ -12,7 +12,7 @@ import Directory (removeFile)
 toSqlImage :: Image -> SqlImage
 toSqlImage img = SqlImage
     { sqlImageName = name img
-    , sqlImageTag = tag img
+    , sqlImageTags = tags img
     , sqlImageOwner = owner img
     , sqlImageCaption = caption img 
     , sqlImageVotes = votes img
@@ -23,7 +23,7 @@ toSqlImage img = SqlImage
 fromSqlImage :: SqlImage -> Image
 fromSqlImage img = Image
     { name  = sqlImageName img
-    , tag = sqlImageTag img
+    , tags = sqlImageTags img
     , owner = sqlImageOwner img 
     , caption = sqlImageCaption img
     , votes = sqlImageVotes img
@@ -44,13 +44,26 @@ getImageByName name   = do
 
 -- stores the given Image In the database
 storeImagePersist :: (YesodPersist master , PersistBackend (YesodPersistBackend master) (GGHandler sub master IO)) => Image-> GHandler sub master (Key (YesodPersistBackend master) SqlImage)
-storeImagePersist image = runDB (insert $ toSqlImage image)
+storeImagePersist image = do 
+    id <- runDB (insert $ toSqlImage image)
+    storeTags (T.splitOn "," $ tags image) (created image) id
+    return id
 
+-- stores the relation ship with tags in the tag table 
+storeTags :: (YesodPersist master , PersistBackend (YesodPersistBackend master) (GGHandler sub master IO)) => [Text] -> UTCTime -> Key backend SqlImage-> GHandler sub master ()
+storeTags [] ctime id = return ()
+storeTags (x:xs) ctime id = do
+    runDB (insert $ Tag id x ctime )
+    storeTags xs ctime id 
+    return ()
 -- deletes the given Image from the database
 deleteImagePersist :: (YesodPersist master , PersistBackend (YesodPersistBackend master) (GGHandler sub master IO)) => Image -> GHandler sub master ()
 deleteImagePersist image = return . const () =<< runDB (deleteBy $ UniqueName (name image))
 
-deleteImage :: (YesodPersist master , PersistBackend (YesodPersistBackend master) (GGHandler sub master IO)) => Key (YesodPersistBackend master) SqlImage-> GHandler sub master ()
+{-deleteTags :: (YesodPersist master , PersistBackend (YesodPersistBackend master) (GGHandler sub master IO)) =>  -> GHandler sub master ()-}
+deleteTags id = return . const () =<< runDB (deleteWhere [TagImageId ==. id])
+
+{-deleteImage :: (YesodPersist master , PersistBackend (YesodPersistBackend master) (GGHandler sub master IO)) => Key (YesodPersistBackend master) SqlImage-> GHandler sub master ()-}
 deleteImage id = do
     maybeImage <- getImagePersist id
     case maybeImage of
@@ -59,6 +72,7 @@ deleteImage id = do
             liftIO.removeFile $ T.unpack (T.append uploadDirectory thumbnail)
             liftIO.removeFile $ T.unpack (T.append uploadDirectory  (name image))
             deleteImagePersist image
+            deleteTags id 
         _ -> setMessage "Image not Found"
 
 
@@ -74,20 +88,42 @@ updateById :: (YesodPersist master , PersistEntity val , PersistBackend (YesodPe
 updateById id updateField = runDB $ update id updateField
 
 -- Get By tag 
-getImageByTag :: (YesodPersist master,PersistBackend (YesodPersistBackend master) (GGHandler sub master IO)) => Maybe Text-> Maybe Int-> Int-> GHandler sub master [(Key (YesodPersistBackend master) SqlImage,Image)]
-getImageByTag maybeTag maybeCount offset = do 
-    let f = case maybeTag of 
-                Nothing -> []
-                Just t -> [ SqlImageTag ==. t]
-    let g = case maybeCount of 
-                Nothing -> [ Desc SqlImageCreated , OffsetBy offset ]
-                Just count -> [ Desc SqlImageCreated
-                              , LimitTo count 
-                              , OffsetBy offset
-                              ]
-    map getPair <$> runDB (selectList f g)
+{-getImageByTag :: (YesodPersist master,PersistBackend (YesodPersistBackend master) (GGHandler sub master IO)) => Maybe Text-> Maybe Int-> Int-> GHandler sub master [(Key (YesodPersistBackend master) SqlImage,Image)]-}
+{-getImageByTag maybeTag maybeCount offset = do -}
+    {-let f = case maybeTag of -}
+                {-Nothing -> []-}
+                {-Just t -> [ SqlImageTag ==. t]-}
+    {-let g = case maybeCount of -}
+                {-Nothing -> [ Desc SqlImageCreated , OffsetBy offset ]-}
+                {-Just count -> [ Desc SqlImageCreated-}
+                              {-, LimitTo count -}
+                              {-, OffsetBy offset-}
+                              {-]-}
+    {-map getPair <$> runDB (selectList f g)-}
+ {-where -}
+    {-getPair (a,b) = (a, fromSqlImage b) -}
+{-getImageByTag :: (YesodPersistBackend master ~ SqlPersist, YesodPersist master ,PersistBackend (YesodPersistBackend master) (GGHandler sub master IO)) => Maybe Text-> Maybe Int-> Int-> GHandler sub master [(SqlImageId,Image)]-}
+getImageByTag maybeTag maybeCount offset = case maybeTag of 
+        Nothing -> map (\(a,b) -> (a , fromSqlImage b) ) <$> runDB (selectList [] (maybe [Desc SqlImageCreated , OffsetBy offset] (\count -> [Desc SqlImageCreated , LimitTo count , OffsetBy offset ]) maybeCount) )
+        Just t -> do
+            let g = maybe [Desc TagCreated , OffsetBy offset] (\count -> [Desc TagCreated , LimitTo count ,OffsetBy offset]) maybeCount
+            listImages <- map getSqlImageIds <$> runDB (selectList [TagTag ==. t] g)
+            listMaybepairs <- pairSequence $  map (\a -> (a,getImagePersist a)) listImages
+            return $ paircatMaybes listMaybepairs
  where 
-    getPair (a,b) = (a, fromSqlImage b) 
+    getSqlImageIds :: (a,Tag) -> SqlImageId
+    getSqlImageIds (a,b) = tagImageId b 
+    pairSequence :: (Monad m,Functor m) => [(a , m b)] -> m [(a,b)]
+    pairSequence [] = return []
+    pairSequence ((a,b):xs) = do 
+        temp <- b
+        fmap ((:) (a,temp)) (pairSequence xs) 
+    paircatMaybes :: [(a, Maybe b)] -> [(a, b)]
+    paircatMaybes [] = [] 
+    paircatMaybes ((a,b):xs) = case b of 
+        Just image -> (a,image):paircatMaybes xs
+        Nothing -> paircatMaybes xs 
+
 
 data JsonImage = JsonImage 
     { jName :: Text
@@ -100,7 +136,7 @@ toJsonImage lnk image = JsonImage
     { jName = caption image 
     , jLink = lnk
     , jSrc = T.append sUploadDirectory (name image)
-    , jTag = tag image 
+    , jTag = tags image 
     }
 instance ToJSON JsonImage where 
     toJSON image = object [ "src" .= jSrc image

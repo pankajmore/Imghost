@@ -24,7 +24,7 @@ postApiR = do
                         time <- liftIO getCurrentTime
                         mid <- maybeAuthId
                         let image = Image { name = randName
-                                          , tag = t  
+                                          , tags = t  
                                           , owner = mid 
                                           , caption = getName $ fileName fileInfo
                                           , votes = 0 

@@ -29,7 +29,7 @@ $if boolDeleteImage
                     ^{iwidget}
     <tr>
         <td>
-            <p> Tag : #{tag image}
+            <p> Tag : #{tags image}
     <tr>
         <td>
             <p> Created : #{createdTime} 
