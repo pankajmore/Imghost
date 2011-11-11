@@ -34,10 +34,9 @@ postApiR = do
                         liftIO $ L.writeFile (T.unpack $ T.append uploadDirectory randName) $ fileContent fileInfo
                         liftIO $ system . T.unpack  $ T.concat ["convert ",uploadDirectory,randName," -thumbnail 100x100^ -gravity center -extent 100x100 ",uploadDirectory,getThumb randName]
                         id <- storeImagePersist image
-                        return ()
+                        redirect RedirectTemporary (ImageR id)
                     else liftIO $ print ("Not an image" ++ T.unpack (fileContentType fileInfo))
             else liftIO $ print "Not a default tag given"
         _ -> liftIO $ print "tag not given"
-    return ()
-
+    redirect RedirectTemporary RootR
 
