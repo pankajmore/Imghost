@@ -10,7 +10,8 @@ import System.Cmd (system)
 import Data.Time (getCurrentTime)
 import Data.List (intersperse)
 import qualified Data.ByteString.Lazy as L
-postUploadR :: Handler RepHtml
+import Data.Aeson
+postUploadR :: Handler RepJson
 postUploadR = do
     ((res,widget),enctype) <- runFormPost uploadForm
     case res of 
@@ -22,6 +23,7 @@ postUploadR = do
                                         randName <- getRandomName extension
                                         time <- liftIO getCurrentTime
                                         mid <- maybeAuthId
+                                        master <- getYesod
                                         let image = Image { name = randName
                                                     , tags = T.intercalate "," $ itags formImage 
                                                     , owner = mid 
@@ -33,7 +35,8 @@ postUploadR = do
                                         liftIO $ L.writeFile (T.unpack $ T.append uploadDirectory randName) $ fileContent fileInfo
                                         liftIO $ system . T.unpack  $ T.concat ["convert ",uploadDirectory,randName," -thumbnail 100x100^ -gravity center -extent 100x100 ",uploadDirectory,getThumb randName]
                                         id <- storeImagePersist image
-                                        redirect RedirectTemporary $ ImageR id
+                                        jsonToRepJson.toJSON $ (\(a,b) -> toJsonImage (yesodRender master (ImageR a) [] ) b) (id,image)
+
                                 else do 
                                         setMessage "Not an image File"
                                         redirect RedirectTemporary RootR
