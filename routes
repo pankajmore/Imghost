@@ -15,4 +15,5 @@
 /comments              CommentsAdminR CommentsAdmin getCommentsAdmin
 /image/download/#SqlImageId DownloadImageR POST
 /image/edit/caption/#SqlImageId CaptionR POST
+/image/edit/tag/#SqlImageId TagR POST
 /api/upload ApiR POST

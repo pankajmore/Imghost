@@ -9,6 +9,7 @@ import qualified Data.Text as T
 import Yesod.Comments
 import Forms.Image
 import Forms.Caption 
+import Forms.Tag 
 import Yesod.Goodies.Time
 getImageR :: SqlImageId -> Handler RepHtml
 getImageR id = do 
@@ -32,6 +33,8 @@ getImageR id = do
                 case maybeImage of
                     Just image ->do 
                                     createdTime <- humanReadableTime $ created image
+                                    let tagList = T.splitOn "," $ tags image
+                                    ((tagresult, tagwidget), tagenctype) <- generateFormPost (tagForm tagList)
                                     let iName = name image 
                                     defaultLayout $ do
                                         urlbox <- lift newIdent
