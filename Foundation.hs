@@ -107,7 +107,7 @@ instance YesodAuth ImgHost where
                 _   <- insert $ Ident (credsIdent creds) uid
                 return $ Just uid
 
-    authPlugins = [ authOpenId, authBrowserId']
+    authPlugins = [ authOpenId, authBrowserId', authFacebook "192134744202091" "b8bd83b2ab589fcaaad902885e62e3f2" []]
 
     loginHandler = defaultLayout $ do
         setTitle "Login"

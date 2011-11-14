@@ -16,8 +16,12 @@
       <form method="get" action="@{AuthR forwardUrl}">
         <input type="hidden" name="openid_identifier" value="http://me.yahoo.com">
         <input type="image" src="/static/images/yahoo_login.png" title="Login via Yahoo!">
-    <li#openid>
+    <li #openid>
       <form method="get" action="@{AuthR forwardUrl}">
         <input type="image" src="/static/images/openid_login.png" title="Login via OpenID">
         <input id="openid_identifier" type="text" name="openid_identifier" placeholder="http://">
+    <li #facebook>
+      <form method="get" action="@{AuthR forwardUrl}">
+        <input type="hidden" name="openid_identifier" value="http://me.yahoo.com">
+        <input type="image" src="/static/images/fbconnect.png" title="Login via Facebook!">
 
