@@ -15,6 +15,7 @@ getDisplayR tagquery n = do
                         allList <- getImageByTag (Just tagquery) Nothing 0
                         let numberOfItems = length allList
                         let pages = [1..((numberOfItems `div` count) + 1)]
+--                        addScript $ StaticR js_jquery_infinitescroll_js
                         defaultLayout $(widgetFile "display")
 
 

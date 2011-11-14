@@ -12,6 +12,6 @@ uploadForm :: Html -> Form ImgHost ImgHost (FormResult Img, Widget)
 uploadForm = renderTable $ Img
     <$> fileAFormReq ""
     {-<*> areq (selectField defaultTags) "Tag " Nothing-}
-    <*> areq (multiSelectField defaultTags) (FieldSettings ("Tag " :: Text) Nothing (Just "uploadFormInput") Nothing) Nothing
+    <*> areq (multiSelectField defaultTags) (FieldSettings ("Tag " :: Text) Nothing (Just "uploadFormInput") Nothing) (Just ["Other"])
 
 

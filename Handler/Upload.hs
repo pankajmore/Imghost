@@ -1,6 +1,6 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE TypeFamilies, QuasiQuotes, MultiParamTypeClasses,TemplateHaskell, OverloadedStrings #-}
-module Handler.Upload (postUploadR) where
+module Handler.Upload (postUploadR,getUploadR) where
 import Foundation
 import Forms.Upload
 import Helpers.Document
@@ -33,14 +33,17 @@ postUploadR = do
                                                     , created = time
                                                     }
                                         liftIO $ L.writeFile (T.unpack $ T.append uploadDirectory randName) $ fileContent fileInfo
-                                        liftIO $ system . T.unpack  $ T.concat ["convert ",uploadDirectory,randName," -thumbnail 100x100^ -gravity center -extent 100x100 ",uploadDirectory,getThumb randName]
+--                                        liftIO $ system . T.unpack  $ T.concat ["convert ",uploadDirectory,randName," -thumbnail 100x100^ -gravity center -extent 100x100 ",uploadDirectory,getThumb randName]
                                         id <- storeImagePersist image
                                         jsonToRepJson.toJSON $ (\(a,b) -> toJsonImage (yesodRender master (ImageR a) [] ) b) (id,image)
 
                                 else do 
                                         setMessage "Not an image File"
                                         redirect RedirectTemporary RootR
-        _ -> do setMessage "Form Error . Fill Again"
-                redirect RedirectTemporary RootR 
-
-
+        FormMissing  -> do
+            setMessage "Form Missing . Fill Again"
+            redirect RedirectTemporary RootR 
+        FormFailure x -> do 
+            setMessage "Form Failure"
+            redirect RedirectTemporary RecentR 
+getUploadR = postUploadR

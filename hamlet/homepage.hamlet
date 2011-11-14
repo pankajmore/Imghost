@@ -1,8 +1,12 @@
 <form method=get action=@{SearchR} enctype=#{enctypeSearch}>
     Search by ^{widgetSearch}        
         <input type=submit>
-<form method=post action=@{UploadR} enctype=#{enctypeUpload}>
+<form #fileupload method=post action=@{UploadR} enctype=#{enctypeUpload}>
     ^{widgetUpload}        
-        <input type=submit>
+    <div #box-wrapper>
+        <div #fileupload-dropbox .box>
+        <p>Drop files here!
+    <div #fileupload-filedialog .box>
+
 <br>
 <div id="sliderContainer" align="center">

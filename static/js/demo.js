@@ -3,5 +3,6 @@ jQuery(function($){
     slider.setSize(800, 500);
     slider.fetchJson('json?count=15');
     slider.setTransitionFunction(SliderTransitionFunctions.circles);
-    $("#h4").chosen()
+    $("#uploadFormInput").chosen();
+    $("#h2").chosen();
 });

@@ -1,6 +1,6 @@
 / RootR GET
 /auth AuthR Auth getAuth
-/upload UploadR POST
+/upload UploadR GET POST
 /image/#SqlImageId ImageR GET POST
 /recent RecentR GET
 /json JsonR GET
