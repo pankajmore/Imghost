@@ -12,6 +12,7 @@ import Handler.Search
 import Handler.Display
 import Handler.Image
 import Handler.Vote
+import Handler.Tag
 import Handler.Download
 import Handler.Delete
 import Handler.Api

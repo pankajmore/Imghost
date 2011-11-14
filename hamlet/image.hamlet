@@ -10,6 +10,8 @@
 <p> #{caption image}
 <form method=post action=@{CaptionR id} enctype=#{capenctype}> 
     ^{capwidget}
+<form method=post action=@{TagR id} enctype=#{tagenctype}> 
+    ^{tagwidget}
 <form method=post action=@{DownloadImageR id} enctype=#{downenctype}> 
     ^{downwidget}
 $if boolDeleteImage

@@ -35,6 +35,7 @@ library
                      Forms.Search
                      Forms.Upload
                      Forms.Caption
+                     Forms.Tag
                      Forms.Profile
                      Forms.Image
                      Helpers.Document
@@ -51,6 +52,7 @@ library
                      Handler.Api
                      Handler.Download
                      Handler.Caption
+                     Handler.Tag
                      Handler.Delete
                      Settings.StaticFiles
 

@@ -81,7 +81,7 @@ updateImagePersist :: (YesodPersist master , PersistBackend (YesodPersistBackend
 updateImagePersist old new = do
     mres <- runDB (getBy $ UniqueName (name old))
     case mres of
-        Just (k,_) -> runDB $ update k [SqlImageVotes =. (votes new),SqlImageCaption =. (caption new) ]
+        Just (k,_) -> runDB $ update k [SqlImageVotes =. (votes new),SqlImageCaption =. (caption new) ,SqlImageTags =. (tags new)]
         _          -> return ()
 
 updateById :: (YesodPersist master , PersistEntity val , PersistBackend (YesodPersistBackend master) (GGHandler sub master IO)) => Key (YesodPersistBackend master) val-> [Update val]-> GHandler sub master ()
