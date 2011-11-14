@@ -1,4 +1,4 @@
 jQuery(function($){
-$("form input[type=submit]").hide();
+$(".caption").hide();
 $("input[id=h2]").click(function() {this.select();});
 })

@@ -14,7 +14,7 @@ captionForm extra = do
     return (caption , [whamlet|
 #{extra}
     ^{fvInput icaption}
-    <input type=Submit value="Submit" alt="Submit">
+    <input class="caption" type=Submit value="Submit" alt="Submit">
 
 |])
                 

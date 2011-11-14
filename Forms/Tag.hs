@@ -14,7 +14,7 @@ tagForm selectedTags extra = do
     return (tag , [whamlet|
 #{extra}
     ^{fvInput itag}
-    <input type=Submit value="Submit" alt="Submit">
+    <input class="tags" type=Submit value="Add Tags" alt="Add Tags">
 
 |])
                 
