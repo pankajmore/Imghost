@@ -33,7 +33,7 @@ postUploadR = do
                                                     , created = time
                                                     }
                                         liftIO $ L.writeFile (T.unpack $ T.append uploadDirectory randName) $ fileContent fileInfo
---                                        liftIO $ system . T.unpack  $ T.concat ["convert ",uploadDirectory,randName," -thumbnail 100x100^ -gravity center -extent 100x100 ",uploadDirectory,getThumb randName]
+                                        liftIO $ system . T.unpack  $ T.concat ["convert ",uploadDirectory,randName," -thumbnail 100x100^ -gravity center -extent 100x100 ",uploadDirectory,getThumb randName]
                                         id <- storeImagePersist image
                                         jsonToRepJson.toJSON $ (\(a,b) -> toJsonImage (yesodRender master (ImageR a) [] ) b) (id,image)
 
