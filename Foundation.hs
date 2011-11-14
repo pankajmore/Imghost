@@ -24,12 +24,13 @@ import Data.Time (UTCTime)
 import Settings.StaticFiles
 import Settings
 import Yesod
+import qualified Database.Persist.Base
 import Models
+import Database.Persist.GenericSql
 import Data.Text (Text)
 import qualified Data.Text as T
 import qualified Data.ByteString.Lazy as L
 import Yesod.Static
-import Database.Persist.Sqlite
 import Text.Hamlet (hamletFile)
 import Yesod.Comments hiding (userName, userEmail)
 import Yesod.Comments.Management
@@ -50,12 +51,12 @@ data ImgHost = ImgHost
         { settings :: AppConfig DefaultEnv
         , getLogger :: Logger
         , getStatic :: Static -- ^ Settings for static file serving.
-        , connPool  :: ConnectionPool
+        , connPool :: Database.Persist.Base.PersistConfigPool Settings.PersistConfig -- ^ Database connection pool.
         }
 mkYesodData "ImgHost" $(parseRoutesFile "routes")
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 instance Yesod ImgHost where
-    approot _ = "http://localhost:5432" --change this to website domain-name other openid wont work
+    approot _ = "http://localhost:3000" --change this to website domain-name other openid wont work
     authRoute _ = Just $ AuthR LoginR
     encryptKey _ = fmap Just $ getKey "client_session_key.aes"
     maximumContentLength _ (Just (UploadR {})) = 32 * 1024 * 1024

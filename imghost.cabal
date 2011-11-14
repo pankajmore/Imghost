@@ -90,9 +90,11 @@ executable imghost
                  , clientsession
                  , aeson-native
                  , haskell98
- --                , persistent
+                 , persistent == 0.6.3
+                 , persistent-template
+                 , persistent-postgresql 
  --                , persistent-template
-                 , persistent-sqlite 
+ --                , persistent-sqlite 
                  , hamlet                >= 0.10 && < 0.11
                  , blaze-builder
  --                , blaze-html

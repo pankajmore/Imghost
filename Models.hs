@@ -4,11 +4,15 @@
 module Models where
 
 import Yesod 
-import Database.Persist.Sqlite
 import Data.Text(Text)
 import Data.Time
 import Control.Applicative
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persist|
+User
+    name  Text Maybe Update
+    email Text Maybe Update
+    admin Bool default=false Eq Update
+
 SqlImage
     name Text
     tags Text
@@ -24,11 +28,6 @@ Tag
     tag Text
     created UTCTime   -- To sort on the created time descending order
     UniqueTag imageId tag 
-
-User
-    name  Text Maybe Update
-    email Text Maybe Update
-    admin Bool default=false Eq Update
 
 Votes
     userId UserId
