@@ -5,7 +5,7 @@
     ^{widgetUpload}        
     <div #box-wrapper>
         <div #fileupload-dropbox .box>
-        <p>Drop files here!
+            <p>Drop files here!
     <div #fileupload-filedialog .box>
 
 <br>
