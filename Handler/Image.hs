@@ -39,6 +39,12 @@ getImageR id = do
                                     defaultLayout $ do
                                         urlbox <- lift newIdent
                                         tableProperty <- lift newIdent
+                                        addStylesheet $ StaticR css_chosen_css
+                                        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"
+                                        addScript $ StaticR js_chosen_jquery_js
+                                        toWidget [julius|
+                                        $("#uploadFormInput").chosen();
+                                        |]
                                         $(widgetFile "image")
                                         addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"
                                         addScript $ StaticR js_hideSubmit_js
