@@ -1,0 +1,15 @@
+Default: &defaults
+  user: pankajm
+  password: Ilg00gle
+  host: localhost
+  port: 5432
+
+Development:
+  <<: *defaults
+  database: imghost_dev
+  poolsize: 10
+
+Production:
+  <<: *defaults
+  database: imghost
+  poolsize: 100
