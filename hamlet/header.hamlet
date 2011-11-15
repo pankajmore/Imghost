@@ -1,4 +1,4 @@
-<div #header>
+<header>
     <h1><a href=@{RootR}>ImgHost</a>
     <h2>Anonymous Image Upload
     <h3> Written In Haskell and Yesod
