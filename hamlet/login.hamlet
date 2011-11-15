@@ -7,20 +7,20 @@
     <a href="http://openid.net">Open Id
     \ authentication.
 
-  <ul>
-    <li #google>
+  <div>
+   <div #facebook>
+      <form method="get" action="@{RootR}">
+        <input type="image" src="/static/images/no-facebook.png" width="70" height="70" title="Login via Facebook!">
+   <div #google>
       <form method="get" action="@{AuthR forwardUrl}">
         <input type="hidden" name="openid_identifier" value="https://www.google.com/accounts/o8/id">
-        <input type="image" src="/static/images/google_login.png" title="Login via Google">
-    <li #yahoo>
+        <input type="image" src="/static/images/google_login.png" width="70" height="70" title="Login via Google">
+    <div #yahoo>
       <form method="get" action="@{AuthR forwardUrl}">
         <input type="hidden" name="openid_identifier" value="http://me.yahoo.com">
-        <input type="image" src="/static/images/yahoo_login.png" title="Login via Yahoo!">
-    <li #openid>
+        <input type="image" src="/static/images/yahoo_login.png" width="70" height="70" title="Login via Yahoo!">
+    <div #openid>
       <form method="get" action="@{AuthR forwardUrl}">
-        <input type="image" src="/static/images/openid_login.png" title="Login via OpenID">
+        <input type="image" src="/static/images/openid_login.png" width="70" height="70" title="Login via OpenID">
         <input id="openid_identifier" type="text" name="openid_identifier" placeholder="http://">
-    <li #facebook>
-      <form method="get" action="@{RootR}">
-        <input type="image" src="/static/images/no-facebook.png" title="Login via Facebook!">
 

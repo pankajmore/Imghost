@@ -18,7 +18,6 @@ $(function () {
     // Initialize the Image Gallery plugin:
     $('a[rel="gallery"]').imagegallery({
             open: function (event, ui) {/* called on dialogopen */},
-            title: 'Image Gallery', // Sets the dialog title
             show: 'scale', // The effect to be used when the dialog is opened
             hide: 'explode', // The effect to be used when the dialog is closed
             offsetWidth: 50, // Offset of image width to viewport width

@@ -9,7 +9,7 @@ import Data.Text (Text)
 import Control.Applicative
 
 uploadForm :: Html -> Form ImgHost ImgHost (FormResult Img, Widget)
-uploadForm = renderTable $ Img
+uploadForm = renderDivs $ Img
     <$> fileAFormReq ""
     {-<*> areq (selectField defaultTags) "Tag " Nothing-}
     <*> areq (multiSelectField defaultTags) (FieldSettings ("Tag " :: Text) Nothing (Just "uploadFormInput") Nothing) (Just ["Other"])

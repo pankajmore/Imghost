@@ -1,6 +1,6 @@
 header { 
     margin: 10px; 
-    h1 { 
+    h1 {
         font-size: 2em; 
         text-decoration: none;
        }
@@ -8,7 +8,6 @@ header {
         font-size: 1.3em;
        }
     h3 {
-        background-color: #e2f2fe;
         padding: 15px;
         margin:10px;
         font-size: 1em; 

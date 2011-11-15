@@ -11,6 +11,6 @@
             <a href=@{DisplayR tagquery pageNum}>#{pageNum} #
         <ul>
     $forall i <- imgList
-        <a rel="gallery" href=@{StaticR $ staticUpload (name $ snd i)}><img src=@{StaticR $ staticUpload (getThumb $ name $ snd i)} alt="Angry face"/>
+        <a rel="gallery" href=@{StaticR $ staticUpload (name $ snd i)}><img src=@{StaticR $ staticUpload (getThumb $ name $ snd i)} title="<a href=@{ImageR $ fst i} >Title</a>" alt="Angry face"/>
     </div>
 </div>
